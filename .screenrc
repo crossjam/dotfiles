@@ -1,0 +1,9 @@
+escape ^Zz
+vbell on
+vbell_msg " -- Ring, Ring!! -- "
+
+startup_message off
+
+caption always
+# caption string "%{rk} %c %{dd} %{+b M}%n  %{-b dd}%-w%{+b B.}%n* %t%{-}%+w%<"
+caption string "%H %m/%d/%y %0c%{=b kW}  %l  %{=r kd}%-Lw%{= bd}%50>%n%f* %t%{-}%+Lw%<%{- Wk}"
