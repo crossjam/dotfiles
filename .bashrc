@@ -1,4 +1,4 @@
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 if [ -x /usr/local/bin/gdircolors ]; then
     test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
