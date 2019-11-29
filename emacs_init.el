@@ -1,36 +1,46 @@
-(load-library "url-handlers")
+(setq-default custom-file
+	      (expand-file-name ".custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 (require 'package)
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+(setq-default
+ load-prefer-newer t
+ package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
 (package-initialize)
 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
+ ;; Install dependencies
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package t))
+(setq-default
+ use-package-always-defer t
+ use-package-always-ensure t)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("d3df47c843c22d8f0177fe3385ae95583dc8811bd6968240f7da42fd9aa51b0b" default)))
- '(package-selected-packages
-   (quote
-    (yaml-mode go-mode mellow-theme virtualenvwrapper material-theme dash-at-point cycle-themes ample-theme color-theme-solarized json-mode jq-mode json magit org))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(use-package org :ensure org-plus-contrib)
+(use-package magit)
+(use-package json)
 
-(add-hook 'python-mode-hook (lambda () (turn-on-eldoc-mode nil)))
+(use-package yaml-mode)
+(use-package go-mode)
+(use-package json-mode)
+(use-package jq-mode)
+
+(use-package mellow-theme)
+(use-package material-theme)
+(use-package ample-theme)
+(use-package color-theme-solarized)
+(use-package cycle-themes)
+
+
+(add-hook 'python-mode-hook
+	  (lambda () (turn-on-eldoc-mode nil)))
 (setq python-shell-completion-native-enable nil)
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c m") 'manual-entry)
@@ -40,3 +50,4 @@
 (shell)
 
 (switch-to-buffer "*shell*")
+
