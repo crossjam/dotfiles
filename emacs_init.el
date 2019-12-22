@@ -31,6 +31,7 @@
 (use-package go-mode)
 (use-package json-mode)
 (use-package jq-mode)
+(use-package blacken)
 
 (use-package mellow-theme)
 (use-package material-theme)
