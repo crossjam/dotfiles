@@ -33,6 +33,7 @@
 (use-package jq-mode)
 (use-package blacken)
 
+(use-package ansi-color)
 (use-package mellow-theme)
 (use-package material-theme)
 (use-package ample-theme)
@@ -40,12 +41,29 @@
 (use-package cycle-themes)
 
 
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'python-mode-hook
 	  (lambda () (turn-on-eldoc-mode nil)))
+(add-hook 'python-mode 'blacken-mode)
+(add-hook 'auto-save-hook 'org-save-all-org-buffers)
+
+(setq blacken-executable "/usr/local/bin/black")
+
+(setq org-agenda-files
+      '("~/Dropbox/Data Machines Corporation/Project Management/"))
+
 (setq python-shell-completion-native-enable nil)
+
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c m") 'manual-entry)
 (global-set-key (kbd "C-c s") 'magit-status)
+
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(with-eval-after-load 'transient
+  (transient-bind-q-to-quit))
 
 (load-theme 'material t)
 (shell)
