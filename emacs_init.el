@@ -49,8 +49,9 @@
 
 (setq blacken-executable "/usr/local/bin/black")
 
-(setq org-agenda-files
-      '("~/Dropbox/Data Machines Corporation/Project Management/"))
+(when (file-accessible-directory-p "~/Dropbox/Data Machines Corporation/Project Management/")
+  (setq org-agenda-files
+	'("~/Dropbox/Data Machines Corporation/Project Management/")))
 
 (setq python-shell-completion-native-enable nil)
 
