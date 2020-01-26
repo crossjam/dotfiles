@@ -43,8 +43,8 @@
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'python-mode-hook
-	  (lambda () (turn-on-eldoc-mode nil)))
-(add-hook 'python-mode 'blacken-mode)
+ 	  (lambda (&optional val) (turn-on-eldoc-mode)))
+(add-hook 'python-mode-hook 'blacken-mode)
 (add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
 (setq blacken-executable "/usr/local/bin/black")
