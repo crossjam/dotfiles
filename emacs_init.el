@@ -37,7 +37,7 @@
 (use-package mellow-theme)
 (use-package material-theme)
 (use-package ample-theme)
-(use-package color-theme-solarized)
+(use-package solarized-theme)
 (use-package cycle-themes)
 
 
