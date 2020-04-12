@@ -1,0 +1,10 @@
+# -*- mode: conf; -*-
+
+[user]
+	name = "C. Ross Jam"
+	email = "bmd@crossjam.net"
+
+# Change SOME_SSH_KEY to a private key that has github access rights for the user crossjam
+[core]
+	sshCommand = "ssh -i ~/.ssh/SOME_SSH_KEY -o IdentitiesOnly=yes"
+	

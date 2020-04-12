@@ -1,0 +1,13 @@
+# -*- mode: conf; -*-
+# Base gitconfig that uses ssh-agent keys or ssh default lookup
+
+[user]
+	name = Brian Dennis
+	email = briandennis@datamachines.io
+	
+# Specific to dotfiles to use a key authorized for my personal github account
+# My dotfiles repo is private but useful for consistency across personal and work machines
+# .gitconfig.crossjam has to be updated per machine though
+[includeIf "gitdir:~/dotfiles/.git"]
+	   path = "~/.gitconfig.crossjam"
+
