@@ -40,6 +40,7 @@
 (use-package solarized-theme)
 (use-package cycle-themes)
 
+(use-package org-gcal)
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'python-mode-hook
@@ -65,6 +66,24 @@
 
 (with-eval-after-load 'transient
   (transient-bind-q-to-quit))
+
+(setq org-agenda-time-grid
+      '((daily today)
+	(800 1000 1200 1400 1600 1800 2000)
+	"......" "----------------"))
+
+(when (or (string= (user-login-name) "bmdmc")
+	  (string= (user-login-name) "brian.dennis"))
+  (setq org-gcal-remove-api-cancelled-events t
+	org-gcal-up-days 14
+	org-gcal-down-days 30
+	org-gcal-client-id
+	"783058594145-hkk7p3nmgb1e416vmndi2j2448mlitot.apps.googleusercontent.com"
+	org-gcal-client-secret "nlDtFi7e8ZkZg0xPVE_UBNzV"
+	org-gcal-file-alist
+	'(("briandennis@datamachines.io" . "~/Dropbox/Data Machines Corporation/Project Management/gcal.org"))
+	))
+
 
 (load-theme 'material t)
 (shell)
