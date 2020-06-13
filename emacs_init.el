@@ -31,6 +31,7 @@
 (use-package go-mode)
 (use-package json-mode)
 (use-package jq-mode)
+(use-package markdown-mode)
 (use-package blacken)
 
 (use-package ansi-color)
