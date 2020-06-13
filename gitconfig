@@ -3,7 +3,7 @@
 
 [user]
 	name = Brian Dennis
-	email = briandennis@datamachines.io
+	email = bmd+github@crossjam.net
 	
 # Specific to dotfiles to use a key authorized for my personal github account
 # My dotfiles repo is private but useful for consistency across personal and work machines
