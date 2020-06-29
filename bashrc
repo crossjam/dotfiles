@@ -61,3 +61,6 @@ fi
 if [ -x /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+# added by pipx (https://github.com/pipxproject/pipx)
+export PATH="/home/crossjam/.local/bin:$PATH"
