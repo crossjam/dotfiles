@@ -19,6 +19,7 @@ INSTALL_DOTFILES = [
     ("screenrc", ".screenrc"),
     ("bashrc", ".bashrc"),
     ("bash_profile", ".bash_profile"),
+    ("gitconfig", ".gitconfig"),
     ("gitignore", ".gitignore"),
     ("emacs_init.el", "~/.emacs.d/init.el"),
 ]
@@ -38,9 +39,6 @@ with head("Installing dotfiles."):
         symlink(dot_file, orig_file)
         
 symlink("emacs_init.el", str(emacs_init_dir / "init.el"))
-
-if not (home_dir / ".gitconfig").exists():
-    symlink("gitconfig", ".gitconfig")
 
 if not (home_dir / ".gitconfig.crossjam").exists():
     shutil.copy2(
