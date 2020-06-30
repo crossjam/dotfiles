@@ -37,11 +37,10 @@ with head("Processing potentially preexisting targets."):
 with head("Installing dotfiles."):
     for dot_file, orig_file in INSTALL_DOTFILES:
         symlink(dot_file, orig_file)
-        
-symlink("emacs_init.el", str(emacs_init_dir / "init.el"))
 
 if not (home_dir / ".gitconfig.crossjam").exists():
-    shutil.copy2(
-        str(home_dir / "dotfiles" / "gitconfig.crossjam"),
-        str(home_dir / ".gitconfig.crossjam"),
-    )
+    with head("Extending for crossjam SSH login"):
+        shutil.copy2(
+            str(home_dir / "dotfiles" / "gitconfig.crossjam"),
+            str(home_dir / ".gitconfig.crossjam"),
+        )
