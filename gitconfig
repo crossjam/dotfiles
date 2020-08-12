@@ -2,8 +2,8 @@
 # Base gitconfig that uses ssh-agent keys or ssh default lookup
 
 [user]
-	name = Brian Dennis
-	email = bmd+github@crossjam.net
+	name = Brian DMC Dennis
+	email = briandennis@datamachines.io
 	
 # Specific to dotfiles to use a key authorized for my personal github account
 # My dotfiles repo is private but useful for consistency across personal and work machines
