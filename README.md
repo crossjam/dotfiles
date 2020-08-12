@@ -1,6 +1,9 @@
 # dotfiles
 [crossjam](https://github.com/crossjam) specific startup files for
-various operating systems, shells, and applications
+various operating systems, shells, and applications.
+
+This branch is specific to installing from a work environment login
+with just enough support to install and maintain these dotfiles.
 
 ## Bootstrapping
 
