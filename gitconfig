@@ -9,5 +9,5 @@
 # My dotfiles repo is private but useful for consistency across personal and work machines
 # .gitconfig.bmdmc has to be updated per machine though
 [includeIf "gitdir:~/dotfiles/.git"]
-	path = "~/.gitconfig.bmdmc"
+	path = "~/.gitconfig.crossjam"
 
