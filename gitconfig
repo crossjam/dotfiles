@@ -8,6 +8,6 @@
 # Specific to dotfiles to use a key authorized for my personal github account
 # My dotfiles repo is private but useful for consistency across personal and work machines
 # .gitconfig.bmdmc has to be updated per machine though
-# [includeIf "gitdir:~/dotfiles/.git"]
-# 	   path = "~/.gitconfig.bmdmc"
+[includeIf "gitdir:~/dotfiles/.git"]
+	path = "~/.gitconfig.bmdmc"
 
