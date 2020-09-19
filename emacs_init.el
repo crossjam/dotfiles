@@ -49,6 +49,9 @@
 (add-hook 'python-mode-hook 'blacken-mode)
 (add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
+(add-hook 'markdown-mode-hook 'electric-quote-mode)
+(add-hook 'markdown-mode-hook 'auto-fill-mode)
+
 (setq blacken-executable "/usr/local/bin/black")
 
 (when (file-accessible-directory-p "~/Dropbox/Data Machines Corporation/Project Management/")
