@@ -61,3 +61,6 @@ fi
 if [ -x /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+# Created by `userpath` on 2020-06-27 23:35:17
+export PATH="$PATH:$HOME/.local/bin"
