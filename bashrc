@@ -1,5 +1,3 @@
-export PATH=$PATH:/usr/local/bin:/usr/local/sbin
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -36,13 +34,13 @@ else
 fi
 unset color_prompt force_color_prompt
 
-if [ -x /usr/local/bin/gdircolors ]; then
+if [[ -n $(type -p gdircolors) ]]; then
     test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
     alias ls='gls -f -CF --color=auto'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
-elif [ -x /usr/bin/dircolors ]; then
+elif [[ -n $(type -p dircolors) ]]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls -f -CF --color=auto'
     alias grep='grep --color=auto'
@@ -62,5 +60,6 @@ if [ -x /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# Created by `userpath` on 2020-06-27 23:35:17
-export PATH="$PATH:$HOME/.local/bin"
+if [[ -n $(type -p pyenv) ]]; then
+    eval "$(pyenv init -)"
+fi
