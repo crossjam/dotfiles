@@ -63,3 +63,7 @@ fi
 if [[ -n $(type -p pyenv) ]]; then
     eval "$(pyenv init -)"
 fi
+
+if [[ -n $(type -p pyenv-virtualenv-init) ]]; then
+    eval "$(pyenv virtualenv-init -)";
+fi
