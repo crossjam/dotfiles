@@ -20,6 +20,10 @@ fi
 export PATH="$PATH:$HOME/.local/bin"
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
+    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+fi
+
 if [ -n "$BASH_VERSION" ]; then
     if [ -f "$HOME/.bashrc" ]; then
 	source "$HOME/.bashrc"
