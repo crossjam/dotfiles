@@ -23,6 +23,7 @@
  use-package-always-defer t
  use-package-always-ensure t)
 
+(use-package exec-path-from-shell) ;; sync PATH from env especially on OS X
 (use-package org :ensure org-plus-contrib)
 (use-package magit)
 (use-package json)
@@ -43,6 +44,9 @@
 
 (use-package org-gcal)
 
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'python-mode-hook
  	  (lambda (&optional val) (turn-on-eldoc-mode)))
@@ -52,11 +56,9 @@
 (add-hook 'markdown-mode-hook 'electric-quote-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
 
-(setq blacken-executable "/usr/local/bin/black")
-
-(when (file-accessible-directory-p "~/Dropbox/Data Machines Corporation/Project Management/")
-  (setq org-agenda-files
-	'("~/Dropbox/Data Machines Corporation/Project Management/")))
+;;; Bind the path so that we don't pickup virtualenv binaries that may be set
+(let ((exec-path '("/opt/homebrew/bin", "/usr/local/bin")))
+  (setq blacken-executable (executable-find "black")))
 
 (setq python-shell-completion-native-enable nil)
 
