@@ -11,4 +11,3 @@ cd dotfiles
 git checkout ${DOTFILES_BRANCH:-master}
 cd ..
 homely add dotfiles
-homely update
