@@ -30,7 +30,7 @@ with head("homebrew"):
         install_system = platform.system()
         if install_system == "Linux":
             note("need to install Linux homebrew")
-            with tempfile.TemporaryFile() as install_sh_tmp:
+            with tempfile.NamedTemporaryFile() as install_sh_tmp:
                 note(f"Downloading brew install script to: {install_sh_tmp}")
                 download(HOMEBREW_INSTALL_SCRIPT, install_sh_tmp)
                 note("Executing brew install script")
