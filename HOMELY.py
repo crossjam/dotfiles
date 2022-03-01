@@ -37,7 +37,7 @@ def brew_executable():
 
 
 with head("homebrew"):
-    if not haveexecutable("brew") or brew_executable():
+    if not (haveexecutable("brew") or brew_executable()):
         install_system = platform.system()
         if install_system == "Linux":
             note("need to install Linux homebrew")
