@@ -56,9 +56,14 @@ with head("homebrew"):
         note("homebrew already installed")
 
 with head("pyenv"):
-    if haveexecutable("brew"):
-        execute(["brew", "install", "pyenv"])
-        execute(["brew", "install", "pyenv-virtualenv"])
+    brew_dir = Path("/home/linuxbrew/.linuxbrew")
+    if brew_dir.is_dir():
+        brew_executable = brew_dir / "bin" / "brew"
+    if brew_executable.exists() and brew_executable.is_file():
+        note("Installing pyenv")
+        execute([brew_executable, "install", "pyenv"])
+        note("Installing pyenv-virtualenv")
+        execute([brew_executable, "install", "pyenv-virtualenv"])
 
 
 INSTALL_DOTFILES = [
