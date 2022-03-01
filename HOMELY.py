@@ -28,8 +28,12 @@ HOMEBREW_INSTALL_SCRIPT = (
 
 def brew_executable():
     brew_dir = Path("/home/linuxbrew/.linuxbrew")
+
     if brew_dir.is_dir():
         brew_binary = brew_dir / "bin" / "brew"
+    else:
+        return ""
+
     if brew_binary.exists() and brew_binary.is_file():
         return str(brew_binary)
     else:
