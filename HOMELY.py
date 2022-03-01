@@ -25,8 +25,19 @@ HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 )
 
+
+def brew_executable():
+    brew_dir = Path("/home/linuxbrew/.linuxbrew")
+    if brew_dir.is_dir():
+        brew_executable = brew_dir / "bin" / "brew"
+    if brew_executable.exists() and brew_executable.is_file():
+        return str(brew_executable)
+    else:
+        return False
+
+
 with head("homebrew"):
-    if not haveexecutable("brew"):
+    if not haveexecutable("brew") or brew_executable():
         install_system = platform.system()
         if install_system == "Linux":
             note("need to install Linux homebrew")
@@ -56,14 +67,12 @@ with head("homebrew"):
         note("homebrew already installed")
 
 with head("pyenv"):
-    brew_dir = Path("/home/linuxbrew/.linuxbrew")
-    if brew_dir.is_dir():
-        brew_executable = brew_dir / "bin" / "brew"
-    if brew_executable.exists() and brew_executable.is_file():
+    brew = brew_executable()
+    if brew:
         note("Installing pyenv")
-        execute([brew_executable, "install", "pyenv"])
+        execute([brew, "install", "pyenv"])
         note("Installing pyenv-virtualenv")
-        execute([brew_executable, "install", "pyenv-virtualenv"])
+        execute([brew, "install", "pyenv-virtualenv"])
 
 
 INSTALL_DOTFILES = [
