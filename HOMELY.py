@@ -19,12 +19,17 @@ mkdir("~/.emacs.d")
 if not dotfiles_old_dir.exists():
     dotfiles_old_dir.mkdir()
 
-installpkg("curl")
-installpkg("libffi-dev")
-installpkg("readline")
-installpkg("sqlite3")
-installpkg("xz")
-installpkg("zlib")
+install_system = platform.system()
+
+PYDEV_PACKAGES = """
+make build-essential libssl-dev zlib1g-dev
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+"""
+
+if install_system == "Linux":
+    for pkg in PYDEV_PACKAGES.split():
+        installpkg.strip(pkg)
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -47,7 +52,6 @@ def brew_executable():
 
 with head("homebrew"):
     if not (haveexecutable("brew") or brew_executable()):
-        install_system = platform.system()
         if install_system == "Linux" and False:
             note("need to install Linux homebrew")
             with tempfile.NamedTemporaryFile(delete=False) as install_sh_tmp:
