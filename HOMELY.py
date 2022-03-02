@@ -43,7 +43,7 @@ def brew_executable():
 with head("homebrew"):
     if not (haveexecutable("brew") or brew_executable()):
         install_system = platform.system()
-        if install_system == "Linux":
+        if install_system == "Linux" and False:
             note("need to install Linux homebrew")
             with tempfile.NamedTemporaryFile(delete=False) as install_sh_tmp:
                 note(f"Downloading brew install script to: {install_sh_tmp.name}")
@@ -74,9 +74,17 @@ with head("pyenv"):
     brew = brew_executable()
     if brew:
         note("Installing pyenv")
-        execute([brew, "install", "pyenv"])
-        note("Installing pyenv-virtualenv")
-        execute([brew, "install", "pyenv-virtualenv"])
+        execute(
+            [
+                "git",
+                "clone",
+                "https://github.com/pyenv/pyenv.git",
+                "/home/crossjam/.pyenv",
+            ]
+        )
+        # execute([brew, "install", "pyenv"])
+        # note("Installing pyenv-virtualenv")
+        # execute([brew, "install", "pyenv-virtualenv"])
 
 
 INSTALL_DOTFILES = [
