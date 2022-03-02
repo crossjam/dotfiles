@@ -5,7 +5,7 @@ elif [[ -x /usr/local/bin/brew ]]; then
 elif [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
    eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 else
-   echo "Couldn't find brew command";
+   echo "Warning: brew command is not available";
 fi
 
 if [[ -n $(type -p pyenv) ]]; then

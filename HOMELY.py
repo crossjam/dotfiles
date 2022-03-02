@@ -20,6 +20,11 @@ if not dotfiles_old_dir.exists():
     dotfiles_old_dir.mkdir()
 
 installpkg("curl")
+installpkg("libffi-dev")
+installpkg("readline")
+installpkg("sqlite3")
+installpkg("xz")
+installpkg("zlib")
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
