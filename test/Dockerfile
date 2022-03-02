@@ -1,6 +1,6 @@
 FROM amd64/ubuntu:focal
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt install -y python3-pip python3-venv git sudo emacs-nox
+RUN apt update && apt install -y python3-pip python3-venv git sudo emacs-nox htop
 RUN adduser --shell /bin/bash crossjam
 RUN usermod -aG sudo crossjam
 RUN echo 'crossjam ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/crossjam
