@@ -29,7 +29,7 @@ libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-d
 
 if install_system == "Linux":
     for pkg in PYDEV_PACKAGES.split():
-        installpkg.strip(pkg)
+        installpkg(pkg.strip())
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
