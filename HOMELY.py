@@ -58,7 +58,7 @@ with head("homebrew"):
                 )
                 note("Executing brew install script")
                 execute(["/bin/bash", "-x", install_sh_tmp.name])
-        elif install_sytem == "Darwin":
+        elif install_system == "Darwin":
             note("need to install Mac homebrew")
             with tempfile.NamedTemporaryFile() as install_sh_tmp:
                 note(f"Downloading brew install script to: {install_sh_tmp}")
