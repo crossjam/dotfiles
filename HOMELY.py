@@ -1,3 +1,4 @@
+import os
 import platform
 import shutil
 import tempfile
@@ -81,14 +82,8 @@ with head("homebrew"):
 
 with head("pyenv"):
     note("Installing pyenv")
-    execute(
-        [
-            "git",
-            "clone",
-            "https://github.com/pyenv/pyenv.git",
-            "/home/crossjam/.pyenv",
-        ]
-    )
+    pyenv_root = Path(os.environ["HOME"]) / ".pyenv"
+    execute(["git", "clone", "https://github.com/pyenv/pyenv.git", str(pyenv_root)])
     # execute([brew, "install", "pyenv"])
     note("Installing pyenv-virtualenv")
     execute(
@@ -96,7 +91,7 @@ with head("pyenv"):
             "git",
             "clone",
             "https://github.com/pyenv/pyenv-virtualenv.git",
-            "/home/crossjam/.pyenv/plugins/pyenv-virtualenv",
+            str(pyenv_root / "plugins" / "pyenv-virtualenv"),
         ]
     )
     # execute([brew, "install", "pyenv-virtualenv"])
