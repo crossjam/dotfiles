@@ -71,28 +71,26 @@ with head("homebrew"):
         note("homebrew already installed")
 
 with head("pyenv"):
-    brew = brew_executable()
-    if brew:
-        note("Installing pyenv")
-        execute(
-            [
-                "git",
-                "clone",
-                "https://github.com/pyenv/pyenv.git",
-                "/home/crossjam/.pyenv",
-            ]
-        )
-        # execute([brew, "install", "pyenv"])
-        note("Installing pyenv-virtualenv")
-        execute(
-            [
-                "git",
-                "clone",
-                "https://github.com/pyenv/pyenv-virtualenv.git",
-                "/home/crossjam/.pyenv/plugins/pyenv-virtualenv",
-            ]
-        )
-        # execute([brew, "install", "pyenv-virtualenv"])
+    note("Installing pyenv")
+    execute(
+        [
+            "git",
+            "clone",
+            "https://github.com/pyenv/pyenv.git",
+            "/home/crossjam/.pyenv",
+        ]
+    )
+    # execute([brew, "install", "pyenv"])
+    note("Installing pyenv-virtualenv")
+    execute(
+        [
+            "git",
+            "clone",
+            "https://github.com/pyenv/pyenv-virtualenv.git",
+            "/home/crossjam/.pyenv/plugins/pyenv-virtualenv",
+        ]
+    )
+    # execute([brew, "install", "pyenv-virtualenv"])
 
 
 INSTALL_DOTFILES = [
