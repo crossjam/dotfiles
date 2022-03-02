@@ -83,7 +83,15 @@ with head("pyenv"):
             ]
         )
         # execute([brew, "install", "pyenv"])
-        # note("Installing pyenv-virtualenv")
+        note("Installing pyenv-virtualenv")
+        execute(
+            [
+                "git",
+                "clone",
+                "https://github.com/pyenv/pyenv-virtualenv.git",
+                "/home/crossjam/.pyenv/plugins/pyenv-virtualenv",
+            ]
+        )
         # execute([brew, "install", "pyenv-virtualenv"])
 
 
