@@ -83,18 +83,27 @@ with head("homebrew"):
 with head("pyenv"):
     note("Installing pyenv")
     pyenv_root = Path(os.environ["HOME"]) / ".pyenv"
-    execute(["git", "clone", "https://github.com/pyenv/pyenv.git", str(pyenv_root)])
-    # execute([brew, "install", "pyenv"])
-    note("Installing pyenv-virtualenv")
-    execute(
-        [
-            "git",
-            "clone",
-            "https://github.com/pyenv/pyenv-virtualenv.git",
-            str(pyenv_root / "plugins" / "pyenv-virtualenv"),
-        ]
-    )
-    # execute([brew, "install", "pyenv-virtualenv"])
+    if not pyenv_root.exists():
+        note("Installing pyenv")
+        execute(["git", "clone", "https://github.com/pyenv/pyenv.git", str(pyenv_root)])
+    else:
+        note(f"pyenv dir: {pyenv_root} already exists. Skipping clone.")
+
+    pyenv_virtualenv_root = pyenv_root / "plugins" / "pyenv-virtualenv"
+    if not (pyenv_virtualenv_root.exists()):
+        note("Installing pyenv-virtualenv")
+        execute(
+            [
+                "git",
+                "clone",
+                "https://github.com/pyenv/pyenv-virtualenv.git",
+                str(pyenv_virtualenv_root),
+            ]
+        )
+    else:
+        note(
+            f"pyenv plugin dir: {pyenv_virtualenv_root} already exists. Skipping clone."
+        )
 
 
 INSTALL_DOTFILES = [
