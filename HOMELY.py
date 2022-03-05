@@ -22,10 +22,12 @@ if not dotfiles_old_dir.exists():
 
 install_system = platform.system()
 
+installpkg("tzdata")
+
 PYDEV_PACKAGES = """
 make build-essential libssl-dev zlib1g-dev
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+libncursesw5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-dev
 """
 
 if install_system == "Linux":
@@ -34,6 +36,7 @@ if install_system == "Linux":
 
 installpkg("emacs", apt="emacs-nox")
 installpkg("black")
+installpkg("htop")
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
