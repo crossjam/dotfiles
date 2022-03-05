@@ -32,6 +32,9 @@ if install_system == "Linux":
     for pkg in PYDEV_PACKAGES.split():
         installpkg(pkg.strip())
 
+installpkg("emacs", apt="emacs-nox")
+installpkg("black")
+
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 )
