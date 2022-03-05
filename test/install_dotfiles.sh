@@ -1,5 +1,6 @@
 #!/bin/bash
 export NONINTERACTIVE=t
+export DEBIAN_FRONTEND=noninteractive
 
 git config --global core.compression 0
 git config --global http.postBuffer 1048576000

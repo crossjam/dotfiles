@@ -31,6 +31,20 @@ libncursesw5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-d
 """
 
 if install_system == "Linux":
+    note("printing sudo environment")
+    execute(["sudo", "DEBIAN_FRONTEND=noninteractive", "printenv"])
+    note("custom install tzdata")
+    execute(
+        [
+            "sudo",
+            "DEBIAN_FRONTEND=noninteractive",
+            "apt-get",
+            "install",
+            "-y",
+            "--quiet",
+            "tzdata",
+        ]
+    )
     for pkg in PYDEV_PACKAGES.split():
         installpkg(pkg.strip())
 
