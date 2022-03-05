@@ -22,8 +22,6 @@ if not dotfiles_old_dir.exists():
 
 install_system = platform.system()
 
-installpkg("tzdata")
-
 PYDEV_PACKAGES = """
 make build-essential libssl-dev zlib1g-dev
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
