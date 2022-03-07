@@ -24,7 +24,7 @@ $ mkdir venv
 $ python3 -m venv ~/venv/homely
 $ source ~/venv/homely/bin/activate
 $ python3 -m pip install homely
-$ homely add dotfiles
+$ bash dotfiles/install_dotfiles.sh
 
 # edit .gitconfig.crossjam to point to the crossjam_host.pub key
 ```
