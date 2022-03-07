@@ -67,3 +67,7 @@ fi
 if [[ -n $(type -p pyenv-virtualenv-init) ]]; then
     eval "$(pyenv virtualenv-init -)";
 fi
+
+# added by pipx (https://github.com/pipxproject/pipx)
+export PATH="$HOME/.local/bin:$PATH"
+
