@@ -24,6 +24,12 @@
  use-package-always-ensure t)
 
 (use-package exec-path-from-shell) ;; sync PATH from env especially on OS X
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
 (use-package org :ensure org-plus-contrib)
 (use-package magit)
 (use-package json)
@@ -44,8 +50,8 @@
 
 (use-package org-gcal)
 
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+;; (when (memq window-system '(mac ns x))
+;;   (exec-path-from-shell-initialize))
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'python-mode-hook
@@ -73,22 +79,22 @@
 (with-eval-after-load 'transient
   (transient-bind-q-to-quit))
 
-(setq org-agenda-time-grid
-      '((daily today)
-	(800 1000 1200 1400 1600 1800 2000)
-	"......" "----------------"))
+;; (setq org-agenda-time-grid
+;;       '((daily today)
+;; 	(800 1000 1200 1400 1600 1800 2000)
+;; 	"......" "----------------"))
 
-(when (or (string= (user-login-name) "bmdmc")
-	  (string= (user-login-name) "brian.dennis"))
-  (setq org-gcal-remove-api-cancelled-events t
-	org-gcal-up-days 14
-	org-gcal-down-days 30
-	org-gcal-client-id
-	"783058594145-hkk7p3nmgb1e416vmndi2j2448mlitot.apps.googleusercontent.com"
-	org-gcal-client-secret "nlDtFi7e8ZkZg0xPVE_UBNzV"
-	org-gcal-file-alist
-	'(("briandennis@datamachines.io" . "~/Dropbox/Data Machines Corporation/Project Management/gcal.org"))
-	))
+;; (when (or (string= (user-login-name) "bmdmc")
+;; 	  (string= (user-login-name) "brian.dennis"))
+;;   (setq org-gcal-remove-api-cancelled-events t
+;; 	org-gcal-up-days 14
+;; 	org-gcal-down-days 30
+;; 	org-gcal-client-id
+;; 	"783058594145-hkk7p3nmgb1e416vmndi2j2448mlitot.apps.googleusercontent.com"
+;; 	org-gcal-client-secret "nlDtFi7e8ZkZg0xPVE_UBNzV"
+;; 	org-gcal-file-alist
+;; 	'(("briandennis@datamachines.io" . "~/Dropbox/Data Machines Corporation/Project Management/gcal.org"))
+;; 	))
 
 
 (load-theme 'material t)
