@@ -26,6 +26,10 @@ export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+elif [[ -x "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin" ]]; then
+    export PATH="$PATH:/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin"
+fi
+
 fi
 
 if [ -n "$BASH_VERSION" ]; then
