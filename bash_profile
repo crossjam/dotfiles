@@ -30,8 +30,6 @@ elif [[ -x "/Applications/Visual Studio Code - Insiders.app/Contents/Resources/a
     export PATH="$PATH:/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin"
 fi
 
-fi
-
 if [ -n "$BASH_VERSION" ]; then
     if [ -f "$HOME/.bashrc" ]; then
 	source "$HOME/.bashrc"
