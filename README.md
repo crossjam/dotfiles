@@ -5,6 +5,12 @@ various operating systems, shells, and applications.
 This branch is specific to installing from a work environment login
 with just enough support to install and maintain these dotfiles.
 
+For the `ssh -i foo.pub` to work, the corresponding private key has to
+have been added to an `ssh-agent`. Apparently there’s some magic where
+the agent uses the pubkey to lookup the corresponding private key. If
+the private key isn’t added then `ssh` thinks the pubkey is a
+malformed private key.
+
 ## Bootstrapping
 
 Assuming `ssh -T git@github.com` auths as `crossjam`
