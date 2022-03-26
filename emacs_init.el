@@ -23,7 +23,12 @@
  use-package-always-defer t
  use-package-always-ensure t)
 
-(use-package exec-path-from-shell) ;; sync PATH from env especially on OS X
+;; sync PATH from env especially on OS X
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 (use-package org :ensure org-plus-contrib)
 (use-package magit)
 (use-package json)
@@ -51,13 +56,21 @@
 (add-hook 'python-mode-hook
  	  (lambda (&optional val) (turn-on-eldoc-mode)))
 (add-hook 'python-mode-hook 'blacken-mode)
-(add-hook 'auto-save-hook 'org-save-all-org-buffers)
+;; (add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
 (add-hook 'markdown-mode-hook 'electric-quote-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
 
 ;;; Bind the path so that we don't pickup virtualenv binaries that may be set
 (let ((exec-path '("/opt/homebrew/bin", "/usr/local/bin")))
+  (setq blacken-executable (executable-find "black")))
+
+;;; Bind the path so that we don't pickup virtualenv binaries that may be set
+
+(let ((exec-path
+       '("/opt/homebrew/bin",
+	 "/usr/local/bin",
+	 (expand-file-name "~/.local/bin"))))
   (setq blacken-executable (executable-find "black")))
 
 (setq python-shell-completion-native-enable nil)
