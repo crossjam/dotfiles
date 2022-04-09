@@ -44,7 +44,7 @@ if install_system == "Linux":
         ]
     )
     for pkg in PYDEV_PACKAGES.split():
-        installpkg(pkg.strip())
+        installpkg(pkg.strip(), brew=False)
 
 installpkg("emacs", apt="emacs-nox")
 installpkg("black")
