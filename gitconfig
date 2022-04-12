@@ -11,3 +11,5 @@
 [includeIf "gitdir:~/dotfiles/.git"]
 	path = "~/.gitconfig.crossjam"
 
+[init]
+	defaultBranch = main

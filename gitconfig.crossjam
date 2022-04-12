@@ -6,5 +6,5 @@
 
 # Change SOME_SSH_KEY to a private key that has github access rights for the user crossjam
 [core]
-	sshCommand = "ssh -i ~/.ssh/SOME_SSH_KEY -o IdentitiesOnly=yes"
+	sshCommand = "ssh -i ~/.ssh/crossjam_dotfiles.pub -o IdentitiesOnly=yes -F /dev/null"
 	
