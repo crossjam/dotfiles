@@ -1,9 +1,12 @@
+from pathlib import Path
+
 xontrib load powerline2
 xontrib load vox
 xontrib load homebrew
 
 source-bash ~/.bashrc
 
+$PATH.insert(0, str(Path($HOME) / ".local" / "bin"))
 
 def conch_symbol(sample=False):
     return [ u" xonsh \U0001F41A", "WHITE", "#555" ]
@@ -12,3 +15,5 @@ $PL_EXTRA_SEC["conch"] = conch_symbol
 $PL_PROMPT = u"conch>short_cwd>rtns"
 
 pl_build_prompt
+
+neofetch
