@@ -23,6 +23,7 @@ fi
 # Created by `userpath` on 2020-06-27 23:35:17
 export PATH="$PATH:$HOME/.local/bin"
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
+export EDITOR="emacs -nw"
 
 if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
