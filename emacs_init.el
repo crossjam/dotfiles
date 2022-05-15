@@ -23,6 +23,11 @@
  use-package-always-defer t
  use-package-always-ensure t)
 
+(use-package unicode-fonts
+  :ensure t
+  :config
+  (unicode-fonts-setup))
+
 ;; sync PATH from env especially on OS X
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
