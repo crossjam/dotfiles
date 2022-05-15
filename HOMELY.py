@@ -14,6 +14,7 @@ from homely.ui import head, note
 home_dir = Path.home()
 emacs_init_dir = home_dir / ".emacs.d"
 dotfiles_old_dir = home_dir / "dotfiles.old"
+iterm2_dir = home_dir / ".iterm2"
 
 mkdir("~/.emacs.d")
 
@@ -49,6 +50,7 @@ if install_system == "Linux":
 installpkg("emacs", apt="emacs-nox")
 installpkg("black")
 installpkg("htop")
+installpkg("svn")
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -123,6 +125,44 @@ with head("pyenv"):
             f"pyenv plugin dir: {pyenv_virtualenv_root} already exists. Skipping clone."
         )
 
+with head("pipx"):
+    installpkg("pipx")
+    execute(["pipx", "install", "httpie"])
+    execute(["pipx", "install", "xonsh"])
+    execute(
+        [
+            str(home_dir / ".local" / "bin" / "xonsh"),
+            "-c" "xpip install -U 'xonsh[full]'",
+        ]
+    )
+    execute(
+        [
+            str(home_dir / ".local" / "bin" / "xonsh"),
+            "-c",
+            "xpip install vox",
+        ]
+    )
+    execute(
+        [
+            str(home_dir / ".local" / "bin" / "xonsh"),
+            "-c",
+            "xpip install packaging xontrib-powerline2 xontrib-homebrew",
+        ]
+    )
+
+with head("neofetch"):
+    installpkg("neofetch")
+
+with head("nerdfonts"):
+    if haveexecutable("brew"):
+        execute(["brew", "tap", "homebrew/cask-fonts"])
+        execute(["brew", "install", "font-3270-nerd-font"])
+        execute(["brew", "install", "font-droid-sans-mono-for-powerline"])
+        execute(["brew", "install", "font-fira-code"])
+        execute(["brew", "install", "font-fira-sans"])
+        execute(["brew", "install", "font-fira-mono"])
+        execute(["brew", "install", "font-fira-mono-for-powerline"])
+
 
 INSTALL_DOTFILES = [
     ("screenrc", ".screenrc"),
@@ -131,6 +171,8 @@ INSTALL_DOTFILES = [
     ("gitconfig", ".gitconfig"),
     ("gitignore", ".gitignore"),
     ("emacs_init.el", "~/.emacs.d/init.el"),
+    ("xonshrc", ".xonshrc"),
+    ("xonsh_iterm2.json", "~/.iterm2/xonsh.json"),
 ]
 
 with head("Processing potentially preexisting targets."):
