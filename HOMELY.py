@@ -154,7 +154,7 @@ with head("neofetch"):
     installpkg("neofetch")
 
 with head("nerdfonts"):
-    if haveexecutable("brew"):
+    if haveexecutable("brew") and install_system == "Darwin":
         execute(["brew", "tap", "homebrew/cask-fonts"])
         execute(["brew", "install", "font-3270-nerd-font"])
         execute(["brew", "install", "font-droid-sans-mono-for-powerline"])
