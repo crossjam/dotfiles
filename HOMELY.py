@@ -17,7 +17,7 @@ dotfiles_old_dir = home_dir / "dotfiles.old"
 iterm2_dir = home_dir / ".iterm2"
 
 mkdir("~/.emacs.d")
-mkdir(iterm2_dir)
+mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
     dotfiles_old_dir.mkdir()
