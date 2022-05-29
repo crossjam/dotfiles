@@ -28,6 +28,7 @@
   :config
   (unicode-fonts-setup))
 
+
 ;; sync PATH from env especially on OS X
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
@@ -79,6 +80,18 @@
   (setq blacken-executable (executable-find "black")))
 
 (setq python-shell-completion-native-enable nil)
+
+(quail-define-package
+ "Emoji" "UTF-8" "😎" t
+ "Emoji input mode for people that really, really like Emoji"
+ '(("\t" . quail-completion))
+ t t nil nil nil nil nil nil nil t)
+
+(quail-define-rules
+ (":)" ?😀)
+ (":P" ?😋)
+ (":D" ?😂)
+ (":thumb:" ?👍))
 
 (global-set-key (kbd "C-c g") 'goto-line)
 (global-set-key (kbd "C-c m") 'manual-entry)
