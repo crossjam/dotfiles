@@ -52,6 +52,7 @@ installpkg("emacs", apt="emacs-nox")
 installpkg("black")
 installpkg("htop")
 installpkg("svn")
+installpkg("pgcli")
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
