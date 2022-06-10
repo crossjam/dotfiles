@@ -51,7 +51,7 @@ if install_system == "Linux":
 installpkg("emacs", apt="emacs-nox")
 installpkg("black")
 installpkg("htop")
-installpkg("svn")
+installpkg("svn", apt="subversion")
 installpkg("pgcli")
 
 HOMEBREW_INSTALL_SCRIPT = (
@@ -60,36 +60,29 @@ HOMEBREW_INSTALL_SCRIPT = (
 
 
 def brew_executable():
-    brew_dir = Path("/home/linuxbrew/.linuxbrew")
+    brew_dirs = [
+        Path("~/.linuxbrew").expanduser()
+        Path("/home/linuxbrew/.linuxbrew"),
+    ]
 
-    if brew_dir.is_dir():
+    for brew_dir in brew_dirs:
         brew_binary = brew_dir / "bin" / "brew"
-    else:
-        return ""
 
-    if brew_binary.exists() and brew_binary.is_file():
-        return str(brew_binary)
-    else:
-        return False
+        if brew_binary.exists() and brew_binary.is_file():
+            return str(brew_binary)
+    return ""
 
 
 with head("homebrew"):
     if not (haveexecutable("brew") or brew_executable()):
-        if install_system == "Linux" and False:
-            note("need to install Linux homebrew")
-            with tempfile.NamedTemporaryFile(delete=False) as install_sh_tmp:
-                note(f"Downloading brew install script to: {install_sh_tmp.name}")
-                execute(
-                    [
-                        "curl",
-                        "-fsSL",
-                        "-o",
-                        install_sh_tmp.name,
-                        HOMEBREW_INSTALL_SCRIPT,
-                    ]
-                )
-                note("Executing brew install script")
-                execute(["/bin/bash", "-x", install_sh_tmp.name])
+        if install_system == "Linux":
+            note("need to install personal Linux homebrew, executing install script")
+            execute(
+                [
+                    "/bin/bash",
+                    Path("~/dotfiles/install_personal_linuxbrew.sh").expanduser(),
+                ]
+            )
         elif install_system == "Darwin":
             note("need to install Mac homebrew")
             with tempfile.NamedTemporaryFile() as install_sh_tmp:
