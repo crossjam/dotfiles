@@ -61,7 +61,7 @@ HOMEBREW_INSTALL_SCRIPT = (
 
 def brew_executable():
     brew_dirs = [
-        Path("~/.linuxbrew").expanduser()
+        Path("~/.linuxbrew").expanduser(),
         Path("/home/linuxbrew/.linuxbrew"),
     ]
 
