@@ -1,9 +1,8 @@
 #!/bin/bash
 export NONINTERACTIVE=t
 export DEBIAN_FRONTEND=noninteractive
-
-git config --global core.compression 0
-git config --global http.postBuffer 1048576000
+# export GIT_HTTP_MAX_REQUEST_BUFFER=100M
+# export GIT_CORE_COMPRESSION=0
 
 PYTHONUSERBASE=$HOME/.local /usr/bin/python3 -m pip install pipx
 PATH=$PATH:$HOME/.local/bin
