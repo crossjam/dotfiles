@@ -80,7 +80,7 @@ with head("homebrew"):
             execute(
                 [
                     "/bin/bash",
-                    Path("~/dotfiles/install_personal_linuxbrew.sh").expanduser(),
+                    str(Path("~/dotfiles/install_personal_linuxbrew.sh").expanduser()),
                 ]
             )
         elif install_system == "Darwin":
