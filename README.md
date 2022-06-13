@@ -11,7 +11,7 @@ Assuming `ssh -T git@github.com` auths as `crossjam`
 
 ```
 # Make sure we only use the github identity
-$ git clone git@github.com:bmdmc/dotfiles.git
+$ git clone git@github.com:crossjam/dotfiles.git
 $ dotfiles/install_dotfiles.sh
 ```
 
@@ -28,6 +28,6 @@ scp ~/.ssh/crossjam_local_host.pub crossjam@remote_host.example:.ssh/dotfiles.pu
 # Now to the remote machine
 $ ssh -A crossjam@remote_host.example.com
 $ export GIT_SSH_COMMAND="ssh -i ~/.ssh/dotfiles.pub -o IdentitiesOnly=yes"
-$ git clone git@github.com:bmdmc/dotfiles.git
+$ git clone git@github.com:crossjam/dotfiles.git
 $ /bin/bash ./dotfiles/install_dotfiles.sh
 ```
