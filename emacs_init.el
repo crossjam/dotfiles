@@ -53,7 +53,10 @@
 (use-package solarized-theme)
 (use-package cycle-themes)
 
-(use-package org-gcal)
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-global-mode 1))
 
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
@@ -62,13 +65,17 @@
 (add-hook 'python-mode-hook
  	  (lambda (&optional val) (turn-on-eldoc-mode)))
 (add-hook 'python-mode-hook 'blacken-mode)
+
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+
 ;; (add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
 (add-hook 'markdown-mode-hook 'electric-quote-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
 
 ;;; Bind the path so that we don't pickup virtualenv binaries that may be set
-(let ((exec-path '("/opt/homebrew/bin", "/usr/local/bin")))
+(let ((exec-path '("~/.local/bin", "/opt/homebrew/bin", "/usr/local/bin")))
   (setq blacken-executable (executable-find "black")))
 
 ;;; Bind the path so that we don't pickup virtualenv binaries that may be set
@@ -108,19 +115,6 @@
       '((daily today)
 	(800 1000 1200 1400 1600 1800 2000)
 	"......" "----------------"))
-
-(when (or (string= (user-login-name) "bmdmc")
-	  (string= (user-login-name) "brian.dennis"))
-  (setq org-gcal-remove-api-cancelled-events t
-	org-gcal-up-days 14
-	org-gcal-down-days 30
-	org-gcal-client-id
-	"783058594145-hkk7p3nmgb1e416vmndi2j2448mlitot.apps.googleusercontent.com"
-	org-gcal-client-secret "nlDtFi7e8ZkZg0xPVE_UBNzV"
-	org-gcal-file-alist
-	'(("briandennis@datamachines.io" . "~/Dropbox/Data Machines Corporation/Project Management/gcal.org"))
-	))
-
 
 (load-theme 'material t)
 (shell)
