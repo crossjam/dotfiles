@@ -17,6 +17,7 @@ dotfiles_old_dir = home_dir / "dotfiles.old"
 iterm2_dir = home_dir / ".iterm2"
 
 mkdir("~/.emacs.d")
+mkdir("~/.emacs.d/snippets")
 mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
@@ -125,6 +126,7 @@ with head("pipx"):
     execute(["pipx", "install", "httpie"])
     execute(["pipx", "install", "xonsh"])
     execute(["pipx", "install", "cookiecutter"])
+    execute(["pipx", "install", "black"])
     execute(
         [
             str(home_dir / ".local" / "bin" / "xonsh"),
