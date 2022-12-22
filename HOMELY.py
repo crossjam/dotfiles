@@ -31,6 +31,10 @@ libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
 libncursesw5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-dev
 """
 
+PG_PACKAGES = """
+libpq-dev python-dev python3-psycopg2
+"""
+
 if install_system == "Linux":
     note("printing sudo environment")
     execute(["sudo", "DEBIAN_FRONTEND=noninteractive", "printenv"])
@@ -49,11 +53,13 @@ if install_system == "Linux":
     for pkg in PYDEV_PACKAGES.split():
         installpkg(pkg.strip(), brew=False)
 
+    for pkg in PG_PACKAGES.split():
+        installpkg(pkg.strip(), brew=False)
+
 installpkg("emacs", apt="emacs-nox")
 installpkg("black")
 installpkg("htop")
 installpkg("svn", apt="subversion")
-installpkg("pgcli")
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -127,6 +133,7 @@ with head("pipx"):
     execute(["pipx", "install", "xonsh"])
     execute(["pipx", "install", "cookiecutter"])
     execute(["pipx", "install", "black"])
+    execute(["pipx", "install", "pgcli"])
     execute(
         [
             str(home_dir / ".local" / "bin" / "xonsh"),
