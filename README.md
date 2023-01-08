@@ -27,8 +27,8 @@ scp ~/.ssh/crossjam_local_host.pub crossjam@remote_host.example:.ssh/dotfiles.pu
 
 # Now to the remote machine
 
-# If on ubuntu install some base Python packages
-$ sudo apt install python3-pip python3-venv
+# If on ubuntu/debian install some base Python packages
+$ sudo apt install python3 python3-pip python3-venv
 
 $ ssh -A crossjam@remote_host.example.com
 $ export GIT_SSH_COMMAND="ssh -i ~/.ssh/dotfiles.pub -o IdentitiesOnly=yes"

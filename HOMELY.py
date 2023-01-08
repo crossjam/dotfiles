@@ -60,6 +60,10 @@ installpkg("emacs", apt="emacs-nox")
 installpkg("black")
 installpkg("htop")
 installpkg("svn", apt="subversion")
+installpkg("ispell")
+installpkg("aspell")
+installpkg("tree")
+installpkg("net-tools")
 
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
