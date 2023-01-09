@@ -32,7 +32,7 @@ libncursesw5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-d
 """
 
 PG_PACKAGES = """
-libpq-dev python-dev python3-psycopg2
+libpq-dev python3-dev python3-psycopg2
 """
 
 if install_system == "Linux":
