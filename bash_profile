@@ -24,6 +24,7 @@ fi
 export PATH="$PATH:$HOME/.local/bin"
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 export EDITOR="emacs -nw"
+export PYTHONUSERBASE=$HOME/.local
 
 if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
