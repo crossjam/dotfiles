@@ -30,6 +30,10 @@ if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; t
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
+if [[ -x "/opt/homebrew/opt/libpq/bin" ]]; then
+   export PATH="$PATH:/opt/homebrew/opt/libpq/bin"
+fi
+
 if [ -n "$BASH_VERSION" ]; then
     if [ -f "$HOME/.bashrc" ]; then
 	source "$HOME/.bashrc"
