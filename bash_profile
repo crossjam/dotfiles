@@ -30,6 +30,10 @@ if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; t
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
+if [[ -x "/Applications/Postgres.app/Contents/Versions/latest/bin/" ]]; then
+   export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin/"
+fi
+
 if [[ -x "/opt/homebrew/opt/libpq/bin" ]]; then
    export PATH="$PATH:/opt/homebrew/opt/libpq/bin"
 fi
