@@ -121,6 +121,8 @@
 	(800 1000 1200 1400 1600 1800 2000)
 	"......" "----------------"))
 
+(setq dired-listing-switches "-aBhlt  --group-directories-first")
+
 (load-theme 'material t)
 (shell)
 
