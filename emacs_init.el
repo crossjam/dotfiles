@@ -116,11 +116,6 @@
 (with-eval-after-load 'transient
   (transient-bind-q-to-quit))
 
-(setq org-agenda-time-grid
-      '((daily today)
-	(800 1000 1200 1400 1600 1800 2000)
-	"......" "----------------"))
-
 (setq dired-listing-switches "-aBhlt  --group-directories-first")
 
 (load-theme 'material t)
