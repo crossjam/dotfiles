@@ -184,6 +184,7 @@ INSTALL_DOTFILES = [
     ("emacs_init.el", "~/.emacs.d/init.el"),
     ("xonshrc", ".xonshrc"),
     ("xonsh_iterm2.json", "~/.iterm2/xonsh.json"),
+    ("pelicandev", "~/.local/bin/pelicandev"),
 ]
 
 with head("Processing potentially preexisting targets."):
