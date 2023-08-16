@@ -64,6 +64,9 @@ installpkg("ispell")
 installpkg("aspell")
 installpkg("tree")
 
+if install_system == "Darwin":
+    installpkg("coreutils")
+
 if install_system == "Linux":
     installpkg("net-tools")
 
