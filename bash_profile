@@ -22,11 +22,9 @@ fi
 # Could conceivably use Current in place of 3.11
 #
 
-
 if [[ $OSTYPE == "darwin"* ]]; then
     PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
 fi
-
 
 if [[ -n $(type -p pyenv) ]]; then
     export PYENV_ROOT="$HOME/.pyenv"
@@ -62,3 +60,4 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+export PATH
