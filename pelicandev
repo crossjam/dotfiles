@@ -1,0 +1,7 @@
+#!/bin/bash
+export PYENV_VERSION=mpr
+export PORT=8000
+
+cd $HOME/blogs/mpr
+
+pyenv exec make devserver-global
