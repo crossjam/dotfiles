@@ -1,0 +1,11 @@
+upgrade_packages() {
+    PYENV_VERSION=$VIRTUALENV_NAME \
+	pyenv-exec pip install --upgrade \
+	pip setuptools wheel 'xonsh[full]' bpython
+
+    PYENV_VERSION=$VIRTUALENV_NAME \
+	xonsh -c "xpip install packaging xontrib-vox xontrib-powerline2 xontrib-homebrew xontrib-pyenv"
+    
+}
+
+after_virtualenv 'upgrade_packages'

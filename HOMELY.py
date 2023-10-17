@@ -188,7 +188,13 @@ INSTALL_DOTFILES = [
     ("xonshrc", ".xonshrc"),
     ("xonsh_iterm2.json", "~/.iterm2/xonsh.json"),
     ("pelicandev", "~/.local/bin/pelicandev"),
+    (
+        "pyenv_virtualenv_after_bash",
+        "~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv/after.bash",
+    ),
 ]
+
+mkdir("~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv")
 
 with head("Processing potentially preexisting targets."):
     for dot_file, orig_file in INSTALL_DOTFILES:
