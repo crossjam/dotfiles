@@ -7,7 +7,9 @@ export DEBIAN_FRONTEND=noninteractive
 export PYTHONUSERBASE=$HOME/.local
 /usr/bin/python3 -m pip install pipx
 PATH=$PATH:$HOME/.local/bin
-pipx install homely
+# Personal fork with fixes for asyncio deprecations
+# pipx install homely
+pipx install git+ssh://git@github.com/crossjam/homely.git
 homely add dotfiles
 unset GIT_SSH_COMMAND
 
