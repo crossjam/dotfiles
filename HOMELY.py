@@ -18,6 +18,7 @@ iterm2_dir = home_dir / ".iterm2"
 
 mkdir("~/.emacs.d")
 mkdir("~/.emacs.d/snippets")
+mkdir("~/.pip")
 mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
@@ -192,6 +193,7 @@ INSTALL_DOTFILES = [
         "pyenv_virtualenv_after_bash",
         "~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv/after.bash",
     ),
+    ("pip.conf", "~/.pip/pip.conf"),
 ]
 
 mkdir("~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv")
