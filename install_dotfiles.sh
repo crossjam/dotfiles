@@ -5,7 +5,14 @@ export DEBIAN_FRONTEND=noninteractive
 # export GIT_CORE_COMPRESSION=0
 
 export PYTHONUSERBASE=$HOME/.local
-/usr/bin/python3 -m pip install pipx
+
+# On macOS, it's best to install the python.org version of python
+if [[ $OSTYPE == "darwin"* ]]; then
+    PIP_REQUIRE_VIRTUALENV=false /Library/Frameworks/Python.framework/Versions/Current/bin/python3 -m pip install --user pipx
+  else
+    PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --user pipx
+fi    
+
 PATH=$PATH:$HOME/.local/bin
 # Personal fork with fixes for asyncio deprecations
 # pipx install homely
