@@ -116,7 +116,12 @@
 (with-eval-after-load 'transient
   (transient-bind-q-to-quit))
 
-(setq insert-directory-program "gls" dired-use-ls-dired t)
+;; (setq insert-directory-program "gls" dired-use-ls-dired t)
+
+(setq
+ insert-directory-program (or (executable-find "gls") (executable-find "ls"))
+ dired-use-ls-dired t)
+
 (setq dired-listing-switches "-aBhlt  --group-directories-first")
 
 (load-theme 'material t)
