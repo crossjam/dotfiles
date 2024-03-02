@@ -1,4 +1,6 @@
 upgrade_packages() {
+    unset PIP_REQUIRE_VENV
+    unset PIP_REQUIRE_VIRTUALENV
     PYENV_VERSION=$VIRTUALENV_NAME \
 	pyenv-exec pip install --upgrade \
 	pip setuptools wheel 'xonsh[full]' bpython
