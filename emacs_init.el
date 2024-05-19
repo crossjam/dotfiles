@@ -113,6 +113,8 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 
+(global-set-key (kbd "C-c b") 'blacken-buffer)
+
 (with-eval-after-load 'transient
   (transient-bind-q-to-quit))
 
