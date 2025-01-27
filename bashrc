@@ -56,9 +56,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-if [ -x /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"  # Apple Silicon
+
+[[ -r ~/.config/op/plugins.sh ]] && . ~/.config/op/plugins.sh
+
+# if [ -x /etc/bash_completion ] && ! shopt -oq posix; then
+#     . /etc/bash_completion
+# fi
 
 if [[ -n $(type -p pyenv) ]]; then
     eval "$(pyenv init -)"
