@@ -139,11 +139,14 @@ with head("pyenv"):
 
 with head("pipx"):
     installpkg("pipx")
-    execute(["pipx", "install", "httpie"])
-    execute(["pipx", "install", "xonsh"])
-    execute(["pipx", "install", "cookiecutter"])
-    execute(["pipx", "install", "black"])
-    execute(["pipx", "install", "pgcli"])
+    execute(["pipx", "install", "uv"])
+    haveexecutable("httpie") or execute(["uv", "tool", "install", "httpie"])
+    haveexecutable("xonsh") or execute(["uv", "tool", "install", "xonsh"])
+    haveexecutable("cookiecutter") or execute(["uv", "tool", "install", "cookiecutter"])
+    haveexecutable("black") or execute(["uv", "tool", "install", "black"])
+    haveexecutable("pgcli") or execute(["uv", "tool", "install", "pgcli"])
+    haveexecutable("ruff") or execute(["uv", "tool", "install", "ruff"])
+
     execute(
         [
             str(home_dir / ".local" / "bin" / "xonsh"),
