@@ -8,6 +8,7 @@
 (setq-default
  load-prefer-newer t
  package-enable-at-startup nil)
+
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
@@ -31,7 +32,7 @@
 
 (setq exec-path-from-shell-variables '())
 
-(dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "PYTHONUSERBASE"))
+(dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "PYTHONUSERBASE" "PATH"))
   (add-to-list 'exec-path-from-shell-variables var))
 
 ;; sync PATH from env especially on OS X
@@ -42,6 +43,7 @@
 
 (use-package org :ensure org-plus-contrib)
 (use-package magit)
+(use-package tramp)
 (use-package json)
 
 (use-package yaml-mode)
@@ -78,6 +80,16 @@
 
 (add-hook 'markdown-mode-hook 'electric-quote-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
+
+(with-eval-after-load 'tramp
+  (setq tramp-ssh-controlmaster-options
+        (concat tramp-ssh-controlmaster-options " -o ForwardAgent=yes"))
+  ; (add-to-list 'tramp-connection-properties
+  ;              (list (regexp-quote "/ssh:crossjam@countzero:")
+  ;                    "remote-shell-program" "/usr/local/bin/git"))  
+  )
+
+(setq magit-commit-ask-to-stage 'verbose)
 
 ;;; Bind the path so that we don't pickup virtualenv binaries that may be set
 (let ((exec-path '("~/.local/bin", "/opt/homebrew/bin", "/usr/local/bin")))
