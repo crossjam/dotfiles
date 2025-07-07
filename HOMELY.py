@@ -33,7 +33,7 @@ libncursesw5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-d
 """
 
 PG_PACKAGES = """
-libpq-dev python3-dev python3-psycopg2
+libpq-dev python3-dev python3-pip python3-psycopg2
 """
 
 if install_system == "Linux":
@@ -64,6 +64,8 @@ installpkg("svn", apt="subversion")
 installpkg("ispell")
 installpkg("aspell")
 installpkg("tree")
+installpkg("fd", apt="fdfind")
+installpkg("ripgrep")
 
 if install_system == "Darwin":
     installpkg("coreutils")
