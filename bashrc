@@ -67,3 +67,10 @@ fi
 if [[ -n $(type -p pyenv-virtualenv-init) ]]; then
     eval "$(pyenv virtualenv-init -)";
 fi
+
+alias claude="$HOME/.claude/local/claude"
+
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
