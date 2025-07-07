@@ -14,9 +14,18 @@ if [[ $OSTYPE == "darwin"* ]]; then
 fi    
 
 PATH=$PATH:$HOME/.local/bin
-# Personal fork with fixes for asyncio deprecations
 # pipx install homely
-pipx install git+ssh://git@github.com/crossjam/homely.git
+# pipx install git+ssh://git@github.com/crossjam/homely.git
+
+if ! pipx list | grep -q "package uv"; then
+    pipx install uv
+fi
+
+# Personal fork with fixes for asyncio deprecations
+if ! uv tool list | grep -q homely; then
+    uv tool install "homely @ git+https://github.com/crossjam/homely"
+fi
+
 homely add dotfiles
 unset GIT_SSH_COMMAND
 
