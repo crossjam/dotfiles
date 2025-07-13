@@ -91,4 +91,7 @@ alias claude="$HOME/.claude/local/claude"
 . "$HOME/.atuin/bin/env"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+
+eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
+eval "$(direnv hook bash)"
