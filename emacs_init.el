@@ -48,6 +48,7 @@
   :ensure t
   :config (exec-path-from-shell-initialize))
 
+
 (use-package org :ensure org-plus-contrib)
 (use-package magit)
 (use-package json)
@@ -140,6 +141,11 @@
   (transient-bind-q-to-quit))
 
 ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
+
+;; (setq exec-path-from-shell-variables '())
+
+(dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "PYTHONUSERBASE"))
+  (add-to-list 'exec-path-from-shell-variables var))
 
 (setq
  insert-directory-program (or (executable-find "gls") (executable-find "ls"))
