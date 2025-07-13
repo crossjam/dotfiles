@@ -66,6 +66,7 @@ installpkg("aspell")
 installpkg("tree")
 installpkg("fd", apt="fdfind")
 installpkg("ripgrep")
+installpkg("bat")
 
 if install_system == "Darwin":
     installpkg("coreutils")
@@ -193,6 +194,7 @@ INSTALL_DOTFILES = [
     ("xonshrc", ".xonshrc"),
     ("xonsh_iterm2.json", "~/.iterm2/xonsh.json"),
     ("pelicandev", "~/.local/bin/pelicandev"),
+    ("dircolors_emacs", "~/.dircolors.emacs"),
     (
         "pyenv_virtualenv_after_bash",
         "~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv/after.bash",

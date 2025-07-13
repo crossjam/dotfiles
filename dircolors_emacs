@@ -1,0 +1,80 @@
+# Configuration for dircolors with dark background terminals (e.g. Emacs vterm)
+TERM xterm-256color
+
+# Default file colors
+NORMAL 00           # regular file
+FILE 00             # fallback for regular files
+RESET 0
+
+# Directory
+# DIR 94           # bold blue
+DIR 01;38;5;117
+
+# Symlink
+LINK 01;36          # bold cyan
+
+# Socket
+SOCK 01;35          # bold magenta
+
+# Pipe
+FIFO 33             # yellow
+
+# Executable
+EXEC 01;32          # bold green
+
+# Block device
+BLK 01;33           # bold yellow
+
+# Char device
+CHR 01;33           # bold yellow
+
+# Setuid
+SETUID 37;41        # white on red
+
+# Setgid
+SETGID 30;43        # black on yellow
+
+# Sticky other-writable dir
+STICKY_OTHER_WRITABLE 30;46 # black on cyan
+
+# Other-writable dir (not sticky)
+OTHER_WRITABLE 34;42        # blue on green
+
+# Sticky dir
+STICKY 37;44         # white on blue
+
+# Archive files (tar, zip, etc.)
+*.tar 01;31
+*.tgz 01;31
+*.arc 01;31
+*.zip 01;31
+*.gz 01;31
+*.bz2 01;31
+*.xz 01;31
+
+# Image files
+*.jpg 01;35
+*.jpeg 01;35
+*.png 01;35
+*.gif 01;35
+*.bmp 01;35
+*.tiff 01;35
+*.svg 01;35
+
+# Source code
+*.c 00;36
+*.cpp 00;36
+*.py 00;36
+*.sh 00;36
+*.el 00;36
+*.js 00;36
+*.ts 00;36
+*.rs 00;36
+*.go 00;36
+
+# Docs
+*.txt 00;37
+*.md 00;37
+*.org 00;37
+*.pdf 00;31
+*.tex 00;37
