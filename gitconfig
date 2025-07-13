@@ -17,8 +17,8 @@
 [core]
 	excludesfile = "~/.gitignore"
 
-[url "git@github.com:"]
-     insteadOf = https://github.com/
+[url "git@github.com:crossjam"]
+     insteadOf = https://github.com/crossjam
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
