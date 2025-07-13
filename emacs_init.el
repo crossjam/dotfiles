@@ -56,6 +56,9 @@
   :custom
   (vterm-shell "/opt/homebrew/bin/bash"))
 
+(use-package rg :ensure t)
+(use-package wgrep-ag :ensure t)
+
 (use-package yaml-mode)
 (use-package go-mode)
 (use-package json-mode)
