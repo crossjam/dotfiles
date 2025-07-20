@@ -200,6 +200,7 @@ INSTALL_DOTFILES = [
         "~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv/after.bash",
     ),
     ("pip.conf", "~/.pip/pip.conf"),
+    ("atuin_config.toml", "~/.config/atuin/config.toml"),
 ]
 
 mkdir("~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv")
