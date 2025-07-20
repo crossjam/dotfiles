@@ -147,8 +147,9 @@ with head("pipx"):
         ]
     )
 
-with head("neofetch"):
-    installpkg("neofetch")
+with head("infofetchers"):
+    installpkg("fastfetch")
+    installpkg("hyfetch")
 
 with head("nerdfonts"):
     if haveexecutable("brew") and install_system == "Darwin":
