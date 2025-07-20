@@ -78,13 +78,13 @@ fi
 #     . /etc/bash_completion
 # fi
 
-if [[ -n $(type -p pyenv) ]]; then
-    eval "$(pyenv init -)"
-fi
+# if [[ -n $(type -p pyenv) ]]; then
+#     eval "$(pyenv init -)"
+# fi
 
-if [[ -n $(type -p pyenv-virtualenv-init) ]]; then
-    eval "$(pyenv virtualenv-init -)";
-fi
+# if [[ -n $(type -p pyenv-virtualenv-init) ]]; then
+#     eval "$(pyenv virtualenv-init -)";
+# fi
 
 alias claude="$HOME/.claude/local/claude"
 
@@ -92,6 +92,7 @@ alias claude="$HOME/.claude/local/claude"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
+eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
 eval "$(direnv hook bash)"
