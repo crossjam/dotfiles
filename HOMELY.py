@@ -67,6 +67,7 @@ installpkg("tree")
 installpkg("fd", apt="fdfind")
 installpkg("ripgrep")
 installpkg("bat")
+installpkg("bash-preexec")
 
 if install_system == "Darwin":
     installpkg("coreutils")
@@ -114,31 +115,6 @@ with head("homebrew"):
             note("Unknown brew platform")
     else:
         note("homebrew already installed")
-
-with head("pyenv"):
-    note("Installing pyenv")
-    pyenv_root = Path(os.environ["HOME"]) / ".pyenv"
-    if not pyenv_root.exists():
-        note("Installing pyenv")
-        execute(["git", "clone", "https://github.com/pyenv/pyenv.git", str(pyenv_root)])
-    else:
-        note(f"pyenv dir: {pyenv_root} already exists. Skipping clone.")
-
-    pyenv_virtualenv_root = pyenv_root / "plugins" / "pyenv-virtualenv"
-    if not (pyenv_virtualenv_root.exists()):
-        note("Installing pyenv-virtualenv")
-        execute(
-            [
-                "git",
-                "clone",
-                "https://github.com/pyenv/pyenv-virtualenv.git",
-                str(pyenv_virtualenv_root),
-            ]
-        )
-    else:
-        note(
-            f"pyenv plugin dir: {pyenv_virtualenv_root} already exists. Skipping clone."
-        )
 
 with head("pipx"):
     installpkg("pipx")
@@ -195,15 +171,10 @@ INSTALL_DOTFILES = [
     ("xonsh_iterm2.json", "~/.iterm2/xonsh.json"),
     ("pelicandev", "~/.local/bin/pelicandev"),
     ("dircolors_emacs", "~/.dircolors.emacs"),
-    (
-        "pyenv_virtualenv_after_bash",
-        "~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv/after.bash",
-    ),
     ("pip.conf", "~/.pip/pip.conf"),
     ("atuin_config.toml", "~/.config/atuin/config.toml"),
 ]
 
-mkdir("~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv")
 
 with head("Processing potentially preexisting targets."):
     for dot_file, orig_file in INSTALL_DOTFILES:

@@ -74,23 +74,13 @@ fi
 
 [[ -r ~/.config/op/plugins.sh ]] && . ~/.config/op/plugins.sh
 
-# if [ -x /etc/bash_completion ] && ! shopt -oq posix; then
-#     . /etc/bash_completion
-# fi
-
-# if [[ -n $(type -p pyenv) ]]; then
-#     eval "$(pyenv init -)"
-# fi
-
-# if [[ -n $(type -p pyenv-virtualenv-init) ]]; then
-#     eval "$(pyenv virtualenv-init -)";
-# fi
-
 alias claude="$HOME/.claude/local/claude"
 
 . "$HOME/.atuin/bin/env"
 
-[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+[ -f /opt/homebrew/etc/profile.d/bash-preexec.sh ] && . /opt/homebrew/etc/profile.d/bash-preexec.sh
+
+# [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
