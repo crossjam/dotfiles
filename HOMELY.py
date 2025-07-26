@@ -20,6 +20,7 @@ mkdir("~/.emacs.d")
 mkdir("~/.emacs.d/snippets")
 mkdir("~/.pip")
 mkdir("~/.config/direnv")
+mkdir("~/.config/atuin")
 mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
