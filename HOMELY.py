@@ -19,6 +19,7 @@ iterm2_dir = home_dir / ".iterm2"
 mkdir("~/.emacs.d")
 mkdir("~/.emacs.d/snippets")
 mkdir("~/.pip")
+mkdir("~/.config/direnv")
 mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
@@ -183,6 +184,8 @@ INSTALL_DOTFILES = [
     ("dircolors_emacs", "~/.dircolors.emacs"),
     ("pip.conf", "~/.pip/pip.conf"),
     ("atuin_config.toml", "~/.config/atuin/config.toml"),
+    ("direnvrc", "~/.config/direnv/direnvrc"),
+    ("direnv_toml", "~/.config/direnv/direnv.toml"),
 ]
 
 
