@@ -68,6 +68,8 @@ installpkg("fd", apt="fdfind")
 installpkg("ripgrep")
 installpkg("bat")
 installpkg("bash-preexec")
+installpkg("direnv")
+installpkg("cargo")
 
 if install_system == "Darwin":
     installpkg("coreutils")
@@ -93,6 +95,13 @@ def brew_executable():
             return str(brew_binary)
     return ""
 
+
+haveexecutable("cargo") and (
+    haveexecutable("zoxide") or execute(["cargo", "install", "zoxide", "--locked"])
+)
+haveexecutable("cargo") and (
+    haveexecutable("starship") or execute(["cargo", "install", "starship", "--locked"])
+)
 
 with head("homebrew"):
     if not (haveexecutable("brew") or brew_executable()):
