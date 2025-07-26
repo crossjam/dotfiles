@@ -19,6 +19,7 @@ iterm2_dir = home_dir / ".iterm2"
 mkdir("~/.emacs.d")
 mkdir("~/.emacs.d/snippets")
 mkdir("~/.pip")
+mkdir("~/.config/direnv")
 mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
@@ -67,6 +68,9 @@ installpkg("tree")
 installpkg("fd", apt="fdfind")
 installpkg("ripgrep")
 installpkg("bat")
+installpkg("bash-preexec")
+installpkg("direnv")
+installpkg("cargo")
 
 if install_system == "Darwin":
     installpkg("coreutils")
@@ -93,6 +97,13 @@ def brew_executable():
     return ""
 
 
+haveexecutable("cargo") and (
+    haveexecutable("zoxide") or execute(["cargo", "install", "zoxide", "--locked"])
+)
+haveexecutable("cargo") and (
+    haveexecutable("starship") or execute(["cargo", "install", "starship", "--locked"])
+)
+
 with head("homebrew"):
     if not (haveexecutable("brew") or brew_executable()):
         if install_system == "Linux":
@@ -114,31 +125,6 @@ with head("homebrew"):
             note("Unknown brew platform")
     else:
         note("homebrew already installed")
-
-with head("pyenv"):
-    note("Installing pyenv")
-    pyenv_root = Path(os.environ["HOME"]) / ".pyenv"
-    if not pyenv_root.exists():
-        note("Installing pyenv")
-        execute(["git", "clone", "https://github.com/pyenv/pyenv.git", str(pyenv_root)])
-    else:
-        note(f"pyenv dir: {pyenv_root} already exists. Skipping clone.")
-
-    pyenv_virtualenv_root = pyenv_root / "plugins" / "pyenv-virtualenv"
-    if not (pyenv_virtualenv_root.exists()):
-        note("Installing pyenv-virtualenv")
-        execute(
-            [
-                "git",
-                "clone",
-                "https://github.com/pyenv/pyenv-virtualenv.git",
-                str(pyenv_virtualenv_root),
-            ]
-        )
-    else:
-        note(
-            f"pyenv plugin dir: {pyenv_virtualenv_root} already exists. Skipping clone."
-        )
 
 with head("pipx"):
     installpkg("pipx")
@@ -171,8 +157,9 @@ with head("pipx"):
         ]
     )
 
-with head("neofetch"):
-    installpkg("neofetch")
+with head("infofetchers"):
+    installpkg("fastfetch")
+    installpkg("hyfetch")
 
 with head("nerdfonts"):
     if haveexecutable("brew") and install_system == "Darwin":
@@ -195,14 +182,12 @@ INSTALL_DOTFILES = [
     ("xonsh_iterm2.json", "~/.iterm2/xonsh.json"),
     ("pelicandev", "~/.local/bin/pelicandev"),
     ("dircolors_emacs", "~/.dircolors.emacs"),
-    (
-        "pyenv_virtualenv_after_bash",
-        "~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv/after.bash",
-    ),
     ("pip.conf", "~/.pip/pip.conf"),
+    ("atuin_config.toml", "~/.config/atuin/config.toml"),
+    ("direnvrc", "~/.config/direnv/direnvrc"),
+    ("direnv_toml", "~/.config/direnv/direnv.toml"),
 ]
 
-mkdir("~/.pyenv/plugins/pyenv-virtualenv/etc/pyenv.d/virtualenv")
 
 with head("Processing potentially preexisting targets."):
     for dot_file, orig_file in INSTALL_DOTFILES:

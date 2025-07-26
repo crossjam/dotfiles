@@ -159,6 +159,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# direnv
+.direnv
+.envrc
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -217,3 +221,4 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
+

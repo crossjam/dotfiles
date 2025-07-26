@@ -15,10 +15,6 @@ fi
 # https://blog.glyph.im/2023/08/get-your-mac-python-from-python-dot-org.html
 #
 # Setting PATH for Python 3.11
-# Ahead of homebrew but after pyenv on macOS
-# pyenv system should then fall through to the python.org Python install
-# but avoid the Apple "builtin" python3
-#
 # Could conceivably use Current in place of 3.11
 #
 
@@ -26,18 +22,8 @@ if [[ $OSTYPE == "darwin"* ]]; then
     PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
 fi
 
-if [[ -n $(type -p pyenv) ]]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-elif [[ $OSTYPE == "linux-"* && -d "$HOME/.pyenv" ]]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-fi
-
 # Created by `userpath` on 2020-06-27 23:35:17
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin"
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 export EDITOR="emacs -nw"
 export PYTHONUSERBASE=$HOME/.local
