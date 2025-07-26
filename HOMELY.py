@@ -70,7 +70,8 @@ installpkg("ripgrep")
 installpkg("bat")
 installpkg("bash-preexec")
 installpkg("direnv")
-installpkg("cargo")
+installpkg("atuin")
+installpkg("rust", apt="cargo")
 
 if install_system == "Darwin":
     installpkg("coreutils")
