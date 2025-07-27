@@ -78,7 +78,9 @@ alias claude="$HOME/.claude/local/claude"
 
 . "$HOME/.atuin/bin/env"
 
+# Assume most environments will only have one of the following
 [ -f /opt/homebrew/etc/profile.d/bash-preexec.sh ] && . /opt/homebrew/etc/profile.d/bash-preexec.sh
+[ -f /usr/local/etc/profile.d/bash-preexec.sh ] && . /usr/local/etc/profile.d/bash-preexec.sh
 
 # [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
