@@ -177,6 +177,7 @@ INSTALL_DOTFILES = [
     ("screenrc", ".screenrc"),
     ("bashrc", ".bashrc"),
     ("bash_profile", ".bash_profile"),
+    ("bash_aliases", ".bash_aliases"),
     ("gitconfig", ".gitconfig"),
     ("gitignore", ".gitignore"),
     ("emacs_init.el", "~/.emacs.d/init.el"),

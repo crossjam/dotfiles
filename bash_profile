@@ -10,6 +10,13 @@ else
    echo "Warning: brew command is not available";
 fi
 
+export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin"
+export PATH=$PATH:/usr/local/bin:/usr/local/sbin
+export EDITOR="emacsclient -t"
+export VISUAL="emacsclient -c"
+export ALTERNATE_EDITOR=""
+export PYTHONUSERBASE=$HOME/.local
+
 # Following advice from Glyph Lefkowitz on just using the PSF Python on macos
 #
 # https://blog.glyph.im/2023/08/get-your-mac-python-from-python-dot-org.html
@@ -22,11 +29,6 @@ if [[ $OSTYPE == "darwin"* ]]; then
     PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
 fi
 
-# Created by `userpath` on 2020-06-27 23:35:17
-export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin"
-export PATH=$PATH:/usr/local/bin:/usr/local/sbin
-export EDITOR="emacs -nw"
-export PYTHONUSERBASE=$HOME/.local
 
 if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
