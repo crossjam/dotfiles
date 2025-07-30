@@ -76,6 +76,79 @@ fi
 
 alias claude="$HOME/.claude/local/claude"
 
+uvp() {
+    local project_name
+    local dir_name=$(basename "$PWD")
+    
+    # If there are no arguments or the last argument starts with a dash, use dir_name
+    if [ $# -eq 0 ] || [[ "${!#}" == -* ]]; then
+        project_name="$dir_name"
+    else
+        project_name="${!#}"
+        set -- "${@:1:$#-1}"
+    fi
+    
+    UV_PROJECT_ENVIRONMENT="$PWD/.${project_name:-venv}"
+
+    # Check if .envrc already exists
+    if [ -f .envrc ]; then
+        echo "Error: .envrc already exists" >&2
+        return 1
+    fi
+
+
+    # Create .envrc
+    echo "export UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> .envrc
+    echo "layout python" >> .envrc
+
+    # Create Python package using uv with all passed arguments
+    if ! uv init --package --build-backend setuptools --name $project_name; then
+        echo "Error: Failed to create uv project" >&2
+        return 1
+    fi
+
+    # Create Python package using uv with all passed arguments
+    if ! uv sync; then
+        echo "Error: Failed to sync uv project" >&2
+        return 1
+    fi
+
+    # Append to ~/.projects
+    echo "${project_name}=${PWD}" >> ~/.projects
+
+    # Allow direnv to immediately activate the virtual environment
+    direnv allow
+}
+
+uvpi() {
+    local project_name=$(basename "$PWD")
+
+    if [ -n "$UV_PROJECT_ENVIRONMENT" ]; then
+    	 :
+    elif [ -n "$VIRTUAL_ENV" ]; then
+       	 UV_PROJECT_ENVIRONMENT="$VIRTUAL_ENV"
+    elif [ -d ".venv" ]; then
+     	 UV_PROJECT_ENVIRONMENT="$PWD/.venv"
+    else
+	 UV_PROJECT_ENVIRONMENT="$PWD/$project_name"
+    fi
+
+    echo "UV_PROJECT_ENVIRONMENT=$UV_PROJECT_ENVIRONMENT"
+
+    # Check if .envrc already exists
+    if [ -f .envrc ]; then
+        echo "Error: .envrc already exists" >&2
+        return 1
+    fi
+
+    # Create .envrc
+    echo "export UV_PROJECT_ENVIRONMENT=${UV_PROJECT_ENVIRONMENT}" >> .envrc
+    echo "layout python" >> .envrc
+
+    # Allow direnv to immediately activate the virtual environment
+    direnv allow
+}
+
 if [ -f $HOME/.atuin/bin/env ]; then
     . "$HOME/.atuin/bin/env"
 fi
