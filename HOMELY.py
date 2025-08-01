@@ -189,6 +189,7 @@ INSTALL_DOTFILES = [
     ("atuin_config.toml", "~/.config/atuin/config.toml"),
     ("direnvrc", "~/.config/direnv/direnvrc"),
     ("direnv_toml", "~/.config/direnv/direnv.toml"),
+    ("starship.toml", "~/.config/starship.toml"),
 ]
 
 

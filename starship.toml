@@ -1,0 +1,15 @@
+format = '$all$directory$character'
+
+[directory]
+truncation_length = 10
+truncate_to_repo = false
+# format = '[$path]($style)[$read_only]($read_only_style) '
+format = '[$path]($style)( ($read_only))($read_only_style) '
+
+[hostname]
+ssh_only = false
+format = '[$ssh_symbol$hostname]($style) | '
+
+[direnv]
+disabled = true
+
