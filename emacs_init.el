@@ -6,11 +6,11 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(setq vterm-shell "/opt/homebrew/bin/bash")
+
 (require 'package)
 (require 'tramp)
 (require 'tramp-sh)
-
-(setq vterm-shell "/opt/homebrew/bin/bash")
 
 (setq-default
  load-prefer-newer t
@@ -81,7 +81,50 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
+;;; the next batch of prompt hacking was written by claude
+(defun starship-prompt-extract-and-clean-last-line (output)
+  "Extract last line, strip ANSI codes for directory tracking, but preserve original output."
+  (let* ((lines (split-string output "\n"))
+         (last-line (car (last lines)))
+         ;; Work on a COPY for directory extraction
+         (clean-line (ansi-color-filter-apply (copy-sequence last-line))))
+
+    (message "Looking for prompt in: %s" clean-line)
+    
+    (when (string-match "\\([~/][/a-zA-Z0-9._-]*\\|/[/a-zA-Z0-9._-]*\\)[[:space:]]*.*[[:space:]]❯" clean-line)
+      (let ((dir (match-string 1 clean-line)))
+        (condition-case err
+            (progn
+              (setq default-directory (file-name-as-directory (expand-file-name dir)))
+              (when dirtrack-debug
+                (message "Dirtrack: changed to directory '%s'" default-directory)))
+          (error 
+           (when dirtrack-debug
+             (message "Dirtrack: failed to change to directory '%s': %s" dir err))))))
+    
+    ;; Return the ORIGINAL output unchanged for display
+    output))
+
+(defun starship-setup-shell-dirtrack ()
+  "Setup custom directory tracking while preserving ANSI display."
+  (interactive)
+  
+  ;; Disable default modes
+  (shell-dirtrack-mode -1)
+  (when (fboundp 'dirtrack-mode) (dirtrack-mode -1))
+  
+  ;; Make sure ansi-color processes output for display
+  (add-hook 'comint-output-filter-functions 'ansi-color-process-output nil 'local)
+  
+  ;; Add our directory tracking filter AFTER ansi-color processing
+  (add-hook 'comint-output-filter-functions 
+            'starship-prompt-extract-and-clean-last-line nil 'local)
+  
+  (setq dirtrack-debug t))
+
+(add-hook 'shell-mode-hook 'starship-setup-shell-dirtrack)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
 (add-hook 'python-mode-hook
  	  (lambda (&optional val) (turn-on-eldoc-mode)))
 (add-hook 'python-mode-hook 'blacken-mode)
@@ -97,9 +140,6 @@
 (with-eval-after-load 'tramp
   (setq tramp-ssh-controlmaster-options
         (concat tramp-ssh-controlmaster-options " -o ForwardAgent=yes"))
-  ; (add-to-list 'tramp-connection-properties
-  ;              (list (regexp-quote "/ssh:crossjam@countzero:")
-  ;                    "remote-shell-program" "/usr/local/bin/git"))  
   )
 
 (setq magit-commit-ask-to-stage 'verbose)
@@ -147,9 +187,6 @@
 
 ;; (setq exec-path-from-shell-variables '())
 
-(dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "PYTHONUSERBASE"))
-  (add-to-list 'exec-path-from-shell-variables var))
-
 (setq
  insert-directory-program (or (executable-find "gls") (executable-find "ls"))
  dired-use-ls-dired t)
@@ -160,4 +197,5 @@
 (shell)
 
 (switch-to-buffer "*shell*")
+(server-start)
 
