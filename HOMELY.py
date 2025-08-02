@@ -187,9 +187,6 @@ def ubuntu():
 
         download(BASH_PREEXEC_URL, "~/.bash-preexec.sh")
 
-    with head("fzf"):
-        not haveexecutable("fzf") and install_latest_fzf()
-
 
 @section
 def userpkgs():
@@ -208,6 +205,8 @@ def userpkgs():
 
     if IS_LINUX:
         installpkg("net-tools")
+        with head("fzf"):
+            not haveexecutable("fzf") and install_latest_fzf()
 
     if IS_MACOS:
         installpkg("bash-preexec")
