@@ -127,12 +127,16 @@ uvpi() {
 # Assume the platforms I work on will only have one of the following
 [ -f /opt/homebrew/etc/profile.d/bash-preexec.sh ] && . /opt/homebrew/etc/profile.d/bash-preexec.sh
 [ -f /usr/local/etc/profile.d/bash-preexec.sh ] && . /usr/local/etc/profile.d/bash-preexec.sh
+[ -f ~/.bash-preexec.sh ] && . ~/.bash-preexec.sh
 
 if [ -f $HOME/.atuin/bin/env ]; then
     . "$HOME/.atuin/bin/env"
 fi
 
-eval "$(starship init bash)"
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
 eval "$(zoxide init bash)"
-eval "$(atuin init bash)"
 eval "$(direnv hook bash)"
+eval "$(atuin init bash)"
+eval "$(starship init bash)"
+

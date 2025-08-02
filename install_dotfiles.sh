@@ -10,7 +10,7 @@ export PYTHONUSERBASE=$HOME/.local
 if [[ $OSTYPE == "darwin"* ]]; then
     PIP_REQUIRE_VIRTUALENV=false /Library/Frameworks/Python.framework/Versions/Current/bin/python3 -m pip install --user pipx
   else
-    PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --user pipx
+    PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --user pipx --break-system-packages
 fi    
 
 PATH=$PATH:$HOME/.local/bin

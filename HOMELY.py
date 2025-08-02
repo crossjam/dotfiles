@@ -38,7 +38,16 @@ PG_PACKAGES = """
 libpq-dev python3-dev python3-pip python3-psycopg2
 """
 
-if install_system == "Linux":
+RUST_PACKAGES = """
+cmake rustup
+"""
+
+IS_MACOS = (platform.system() == "Darwin")
+IS_LINUX = (platform.system() == "Linux")
+BASH_PREEXEC_URL = \
+    "https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh"
+
+if IS_LINUX:
     note("printing sudo environment")
     execute(["sudo", "DEBIAN_FRONTEND=noninteractive", "printenv"])
     note("custom install tzdata")
@@ -59,6 +68,11 @@ if install_system == "Linux":
     for pkg in PG_PACKAGES.split():
         installpkg(pkg.strip(), brew=False)
 
+    for pkg in RUST_PACKAGES.split():
+        installpkg(pkg.strip(), brew=False)
+
+    download(BASH_PREEXEC_URL, "~/.bash-preexec.sh")
+
 installpkg("emacs", apt="emacs-nox")
 installpkg("black")
 installpkg("htop")
@@ -66,13 +80,16 @@ installpkg("svn", apt="subversion")
 installpkg("ispell")
 installpkg("aspell")
 installpkg("tree")
-installpkg("fd", apt="fdfind")
+installpkg("fd", apt="fd-find")
 installpkg("ripgrep")
 installpkg("bat")
-installpkg("bash-preexec")
+if IS_MACOS:
+    installpkg("bash-preexec")
+    
 installpkg("direnv")
-installpkg("atuin")
-installpkg("rust", apt="cargo")
+installpkg("fzf")
+
+# installpkg("atuin")
 
 if install_system == "Darwin":
     installpkg("coreutils")
@@ -99,24 +116,26 @@ def brew_executable():
     return ""
 
 
+execute(["rustup", "toolchain", "install", "beta"])
+execute(["rustup", "update"])
+execute(["rustup", "default", "beta"])
+
 haveexecutable("cargo") and (
     haveexecutable("zoxide") or execute(["cargo", "install", "zoxide", "--locked"])
 )
+
 haveexecutable("cargo") and (
     haveexecutable("starship") or execute(["cargo", "install", "starship", "--locked"])
 )
 
+haveexecutable("cargo") and (
+    haveexecutable("atuin") or execute(["cargo", "install", "atuin",
+                                        "--locked", "--version", "stable"])
+)
+
 with head("homebrew"):
     if not (haveexecutable("brew") or brew_executable()):
-        if install_system == "Linux":
-            note("need to install personal Linux homebrew, executing install script")
-            execute(
-                [
-                    "/bin/bash",
-                    str(Path("~/dotfiles/install_personal_linuxbrew.sh").expanduser()),
-                ]
-            )
-        elif install_system == "Darwin":
+        if IS_MACOS:
             note("need to install Mac homebrew")
             with tempfile.NamedTemporaryFile() as install_sh_tmp:
                 note(f"Downloading brew install script to: {install_sh_tmp}")
@@ -138,45 +157,30 @@ with head("pipx"):
     haveexecutable("pgcli") or execute(["uv", "tool", "install", "pgcli"])
     haveexecutable("ruff") or execute(["uv", "tool", "install", "ruff"])
 
-    execute(
-        [
-            str(home_dir / ".local" / "bin" / "xonsh"),
-            "-c" "xpip install -U 'xonsh[full]'",
-        ]
-    )
-    execute(
-        [
-            str(home_dir / ".local" / "bin" / "xonsh"),
-            "-c",
-            "xpip install vox",
-        ]
-    )
-    execute(
-        [
-            str(home_dir / ".local" / "bin" / "xonsh"),
-            "-c",
-            "xpip install packaging xontrib-powerline2 xontrib-homebrew",
-        ]
-    )
-
 with head("infofetchers"):
-    installpkg("fastfetch")
+    if IS_MACOS: installpkg("fastfetch")
     installpkg("hyfetch")
 
 with head("nerdfonts"):
-    if haveexecutable("brew") and install_system == "Darwin":
+    if IS_MACOS and haveexecutable("brew"):
         execute(["brew", "install", "font-3270-nerd-font"])
         execute(["brew", "install", "font-droid-sans-mono-for-powerline"])
         execute(["brew", "install", "font-fira-code"])
         execute(["brew", "install", "font-fira-sans"])
         execute(["brew", "install", "font-fira-mono"])
         execute(["brew", "install", "font-fira-mono-for-powerline"])
+    elif IS_LINUX:
+        installpkg("fonts-powerline")
+        installpkg("fonts-firacode")
 
 
 INSTALL_DOTFILES = [
+    # We use plain names for dot files so they
+    # show up in directory listings
     ("screenrc", ".screenrc"),
     ("bashrc", ".bashrc"),
     ("bash_profile", ".bash_profile"),
+    ("bash_logout", ".bash_logout"),
     ("bash_aliases", ".bash_aliases"),
     ("gitconfig", ".gitconfig"),
     ("gitignore", ".gitignore"),
@@ -193,7 +197,7 @@ INSTALL_DOTFILES = [
 ]
 
 
-with head("Processing potentially preexisting targets."):
+with head("Saving potential preexisting targets."):
     for dot_file, orig_file in INSTALL_DOTFILES:
         orig_file_path = Path(orig_file).expanduser()
         dot_file_path = Path("~/dotfiles").expanduser() / dot_file
