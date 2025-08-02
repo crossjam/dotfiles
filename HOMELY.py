@@ -131,8 +131,7 @@ haveexecutable("cargo") and (
 )
 
 haveexecutable("cargo") and (
-    haveexecutable("atuin")
-    or execute(["cargo", "install", "atuin", "--locked", "--version", "stable"])
+    haveexecutable("atuin") or execute(["cargo", "install", "atuin", "--locked"])
 )
 
 with head("homebrew"):
