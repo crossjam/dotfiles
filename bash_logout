@@ -1,2 +1,6 @@
-# trap 'emacsclient --eval "(kill-emacs)" >/dev/null 2>&1' EXIT
-trap 'if ! screen -list | grep -q "\.screen"; then emacsclient --eval "(kill-emacs)" >/dev/null 2>&1; fi' EXIT
+if [[ "$(uname)" != "Darwin" ]]; then
+  # Your logout logic here, e.g.:
+  if ! screen -list | grep -q '\.screen'; then
+    emacsclient --eval '(kill-emacs)' >/dev/null 2>&1
+  fi
+fi
