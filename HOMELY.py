@@ -11,6 +11,7 @@ from pathlib import Path
 
 import requests
 
+from homely.general import section
 from homely.files import symlink, mkdir, download
 from homely.install import installpkg
 from homely.system import execute, haveexecutable
@@ -33,6 +34,9 @@ if not dotfiles_old_dir.exists():
 
 install_system = platform.system()
 
+IS_MACOS = install_system == "Darwin"
+IS_LINUX = install_system == "Linux"
+
 PYDEV_PACKAGES = """
 make build-essential libssl-dev zlib1g-dev
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
@@ -47,139 +51,156 @@ RUST_PACKAGES = """
 cmake rustup
 """
 
-IS_MACOS = platform.system() == "Darwin"
-IS_LINUX = platform.system() == "Linux"
-BASH_PREEXEC_URL = (
-    "https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh"
-)
-
-if IS_LINUX:
-    note("printing sudo environment")
-    execute(["sudo", "DEBIAN_FRONTEND=noninteractive", "printenv"])
-    note("custom install tzdata")
-    execute(
-        [
-            "sudo",
-            "DEBIAN_FRONTEND=noninteractive",
-            "apt-get",
-            "install",
-            "-y",
-            "--quiet",
-            "tzdata",
-        ]
-    )
-    for pkg in PYDEV_PACKAGES.split():
-        installpkg(pkg.strip(), brew=False)
-
-    for pkg in PG_PACKAGES.split():
-        installpkg(pkg.strip(), brew=False)
-
-    for pkg in RUST_PACKAGES.split():
-        installpkg(pkg.strip(), brew=False)
-
-    download(BASH_PREEXEC_URL, "~/.bash-preexec.sh")
-
-installpkg("emacs", apt="emacs-nox")
-installpkg("black")
-installpkg("htop")
-installpkg("svn", apt="subversion")
-installpkg("ispell")
-installpkg("aspell")
-installpkg("tree")
-installpkg("fd", apt="fd-find")
-installpkg("ripgrep")
-installpkg("bat")
-installpkg("rustup")
-
-if IS_MACOS:
-    installpkg("bash-preexec")
-    installpkg("fzf")  # ubuntu has an ancient version
-
-installpkg("direnv")
-
-# installpkg("atuin")
-
-if install_system == "Darwin":
-    installpkg("coreutils")
-
-if install_system == "Linux":
-    installpkg("net-tools")
-
 HOMEBREW_INSTALL_SCRIPT = (
     "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 )
 
-
-def brew_executable():
-    brew_dirs = [
-        Path("~/.linuxbrew").expanduser(),
-        Path("/home/linuxbrew/.linuxbrew"),
-    ]
-
-    for brew_dir in brew_dirs:
-        brew_binary = brew_dir / "bin" / "brew"
-
-        if brew_binary.exists() and brew_binary.is_file():
-            return str(brew_binary)
-    return ""
-
-
-execute(["rustup", "toolchain", "install", "beta"])
-execute(["rustup", "update"])
-execute(["rustup", "default", "beta"])
-
-haveexecutable("cargo") and (
-    haveexecutable("zoxide") or execute(["cargo", "install", "zoxide", "--locked"])
+BASH_PREEXEC_URL = (
+    "https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh"
 )
 
-haveexecutable("cargo") and (
-    haveexecutable("starship") or execute(["cargo", "install", "starship", "--locked"])
-)
 
-haveexecutable("cargo") and (
-    haveexecutable("atuin") or execute(["cargo", "install", "atuin", "--locked"])
-)
-
-with head("homebrew"):
-    if not (haveexecutable("brew") or brew_executable()):
-        if IS_MACOS:
-            note("need to install Mac homebrew")
-            with tempfile.NamedTemporaryFile() as install_sh_tmp:
-                note(f"Downloading brew install script to: {install_sh_tmp}")
-                download(HOMEBREW_INSTALL_SCRIPT, install_sh_tmp)
-                note("Executing brew install script")
-                execute(["/bin/bash", "-c", install_sh_tmp])
+@section
+def homebrew():
+    with head("homebrew"):
+        if not haveexecutable("brew"):
+            if IS_MACOS:
+                note("need to install Mac homebrew")
+                with tempfile.NamedTemporaryFile() as install_sh_tmp:
+                    note(f"Downloading brew install script to: {install_sh_tmp}")
+                    download(HOMEBREW_INSTALL_SCRIPT, install_sh_tmp)
+                    note("Executing brew install script")
+                    execute(["/bin/bash", "-c", install_sh_tmp])
+            else:
+                note("Not on a brew platform")
         else:
-            note("Unknown brew platform")
-    else:
-        note("homebrew already installed")
+            note("homebrew already installed")
 
-with head("pipx"):
-    installpkg("pipx")
-    execute(["pipx", "install", "uv"])
-    haveexecutable("httpie") or execute(["uv", "tool", "install", "httpie"])
-    haveexecutable("xonsh") or execute(["uv", "tool", "install", "xonsh"])
-    haveexecutable("cookiecutter") or execute(["uv", "tool", "install", "cookiecutter"])
-    haveexecutable("black") or execute(["uv", "tool", "install", "black"])
-    haveexecutable("pgcli") or execute(["uv", "tool", "install", "pgcli"])
-    haveexecutable("ruff") or execute(["uv", "tool", "install", "ruff"])
+    if IS_LINUX:
+        note("printing sudo environment")
+        execute(["sudo", "DEBIAN_FRONTEND=noninteractive", "printenv"])
+        note("custom install tzdata")
+        execute(
+            [
+                "sudo",
+                "DEBIAN_FRONTEND=noninteractive",
+                "apt-get",
+                "install",
+                "-y",
+                "--quiet",
+                "tzdata",
+            ]
+        )
+        for pkg in PYDEV_PACKAGES.split():
+            installpkg(pkg.strip(), brew=False)
 
-with head("infofetchers"):
+        for pkg in PG_PACKAGES.split():
+            installpkg(pkg.strip(), brew=False)
+
+        for pkg in RUST_PACKAGES.split():
+            installpkg(pkg.strip(), brew=False)
+
+        download(BASH_PREEXEC_URL, "~/.bash-preexec.sh")
+
+
+@section
+def corepkgs():
+
+    installpkg("emacs", apt="emacs-nox")
+    installpkg("black")
+    installpkg("htop")
+    # installpkg("svn", apt="subversion")
+    installpkg("ispell")
+    installpkg("aspell")
+    installpkg("tree")
+    installpkg("fd", apt="fd-find")
+    installpkg("ripgrep")
+    installpkg("bat")
+    installpkg("rustup")
+    installpkg("direnv")
+
+    if IS_LINUX:
+        installpkg("net-tools")
+
     if IS_MACOS:
-        installpkg("fastfetch")
-    installpkg("hyfetch")
+        installpkg("bash-preexec")
+        installpkg("fzf")  # ubuntu has an ancient version
+        installpkg("coreutils")
 
-with head("nerdfonts"):
-    if IS_MACOS and haveexecutable("brew"):
-        execute(["brew", "install", "font-3270-nerd-font"])
-        execute(["brew", "install", "font-droid-sans-mono-for-powerline"])
-        execute(["brew", "install", "font-fira-code"])
-        execute(["brew", "install", "font-fira-sans"])
-        execute(["brew", "install", "font-fira-mono"])
-        execute(["brew", "install", "font-fira-mono-for-powerline"])
-    elif IS_LINUX:
-        installpkg("fonts-powerline")
-        installpkg("fonts-firacode")
+
+# On a fresh macos install, need to locate the cargo bin path
+# Could make an assumption about /opt/homebrew/opt/rustup/bin
+# But let's just ask rustup
+
+
+def rustup_cargo_path():
+    exitcode, output, _ = execute(["rustup", "which", "cargo"], stdout=True)
+    if not exitcode:
+        output = output.decode("ascii")
+        outlines = [l.strip() for l in output.split("\n") if l.strip()]
+        cargo_path = outlines[-1]
+        note(f"rustup which cargo output: {output}")
+        note(f"cargo path: {cargo_path}")
+        return cargo_path
+    else:
+        raise Exception("Couldn't locate cargo using rustup")
+
+
+@section
+def cargo():
+    with head("cargo"):
+        CARGO_PATH = rustup_cargo_path()
+        execute(["rustup", "toolchain", "install", "beta"])
+        execute(["rustup", "update"])
+        execute(["rustup", "default", "beta"])
+
+        haveexecutable("zoxide") or execute(
+            [CARGO_PATH, "install", "zoxide", "--locked"]
+        )
+
+        haveexecutable("starship") or execute(
+            [CARGO_PATH, "install", "starship", "--locked"]
+        )
+
+        haveexecutable("atuin") or execute([CARGO_PATH, "install", "atuin", "--locked"])
+
+
+@section
+def pipx():
+    with head("pipx"):
+        installpkg("pipx")
+        execute(["pipx", "install", "uv"])
+        haveexecutable("httpie") or execute(["uv", "tool", "install", "httpie"])
+        haveexecutable("xonsh") or execute(["uv", "tool", "install", "xonsh"])
+        haveexecutable("cookiecutter") or execute(
+            ["uv", "tool", "install", "cookiecutter"]
+        )
+        haveexecutable("black") or execute(["uv", "tool", "install", "black"])
+        haveexecutable("pgcli") or execute(["uv", "tool", "install", "pgcli"])
+        haveexecutable("ruff") or execute(["uv", "tool", "install", "ruff"])
+
+
+@section
+def infofetchers():
+    with head("infofetchers"):
+        if IS_MACOS:
+            installpkg("fastfetch")
+        installpkg("hyfetch")
+
+
+@section
+def fonts():
+    with head("nerdfonts"):
+        if IS_MACOS and haveexecutable("brew"):
+            execute(["brew", "install", "font-3270-nerd-font"])
+            execute(["brew", "install", "font-droid-sans-mono-for-powerline"])
+            execute(["brew", "install", "font-fira-code"])
+            execute(["brew", "install", "font-fira-sans"])
+            execute(["brew", "install", "font-fira-mono"])
+            execute(["brew", "install", "font-fira-mono-for-powerline"])
+        elif IS_LINUX:
+            installpkg("fonts-powerline")
+            installpkg("fonts-firacode")
 
 
 def install_latest_fzf(dest_dir="~/.local/bin"):
@@ -219,9 +240,12 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
     print(f"fzf installed to {fzf_bin}")
 
 
-with head("fzf"):
-    if IS_LINUX and (not haveexecutable("fzf")):
-        install_latest_fzf()
+@section
+def fzf():
+    with head("fzf"):
+        if IS_LINUX and (not haveexecutable("fzf")):
+            install_latest_fzf()
+
 
 INSTALL_DOTFILES = [
     # We use plain names for dot files so they
@@ -246,18 +270,20 @@ INSTALL_DOTFILES = [
 ]
 
 
-with head("Saving potential preexisting targets."):
-    for dot_file, orig_file in INSTALL_DOTFILES:
-        orig_file_path = Path(orig_file).expanduser()
-        dot_file_path = Path("~/dotfiles").expanduser() / dot_file
-        note(f"Checking {orig_file_path}")
-        if orig_file_path.exists() and not (orig_file_path.samefile(dot_file_path)):
-            dst_file_path = (
-                dotfiles_old_dir / f"{orig_file_path.name}_{int(time.time())}"
-            )
-            note(f"Original file: {orig_file_path} -> {dst_file_path}")
-            shutil.move(orig_file_path, dst_file_path)
+@section
+def dotfiles():
+    with head("Saving potential preexisting targets."):
+        for dot_file, orig_file in INSTALL_DOTFILES:
+            orig_file_path = Path(orig_file).expanduser()
+            dot_file_path = Path("~/dotfiles").expanduser() / dot_file
+            note(f"Checking {orig_file_path}")
+            if orig_file_path.exists() and not (orig_file_path.samefile(dot_file_path)):
+                dst_file_path = (
+                    dotfiles_old_dir / f"{orig_file_path.name}_{int(time.time())}"
+                )
+                note(f"Original file: {orig_file_path} -> {dst_file_path}")
+                shutil.move(orig_file_path, dst_file_path)
 
-with head("Installing dotfiles."):
-    for dot_file, orig_file in INSTALL_DOTFILES:
-        symlink(dot_file, orig_file)
+    with head("Installing dotfiles."):
+        for dot_file, orig_file in INSTALL_DOTFILES:
+            symlink(dot_file, orig_file)
