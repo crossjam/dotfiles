@@ -1,0 +1,5 @@
+layout_python() {
+  VIRTUAL_ENV="${UV_PROJECT_ENVIRONMENT:-$(pwd)/.venv}"
+  PATH_add "$VIRTUAL_ENV/bin"
+  export VIRTUAL_ENV
+}
