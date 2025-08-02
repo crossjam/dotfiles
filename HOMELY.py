@@ -87,9 +87,9 @@ installpkg("bat")
 if IS_MACOS:
     installpkg("bash-preexec")
     installpkg("rustup")
+    installpkg("fzf")  # ubuntu has an ancient version
 
 installpkg("direnv")
-installpkg("fzf")
 
 # installpkg("atuin")
 
