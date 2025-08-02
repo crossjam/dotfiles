@@ -42,10 +42,11 @@ RUST_PACKAGES = """
 cmake rustup
 """
 
-IS_MACOS = (platform.system() == "Darwin")
-IS_LINUX = (platform.system() == "Linux")
-BASH_PREEXEC_URL = \
+IS_MACOS = platform.system() == "Darwin"
+IS_LINUX = platform.system() == "Linux"
+BASH_PREEXEC_URL = (
     "https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh"
+)
 
 if IS_LINUX:
     note("printing sudo environment")
@@ -85,7 +86,8 @@ installpkg("ripgrep")
 installpkg("bat")
 if IS_MACOS:
     installpkg("bash-preexec")
-    
+    installpkg("rustup")
+
 installpkg("direnv")
 installpkg("fzf")
 
@@ -129,8 +131,8 @@ haveexecutable("cargo") and (
 )
 
 haveexecutable("cargo") and (
-    haveexecutable("atuin") or execute(["cargo", "install", "atuin",
-                                        "--locked", "--version", "stable"])
+    haveexecutable("atuin")
+    or execute(["cargo", "install", "atuin", "--locked", "--version", "stable"])
 )
 
 with head("homebrew"):
@@ -158,7 +160,8 @@ with head("pipx"):
     haveexecutable("ruff") or execute(["uv", "tool", "install", "ruff"])
 
 with head("infofetchers"):
-    if IS_MACOS: installpkg("fastfetch")
+    if IS_MACOS:
+        installpkg("fastfetch")
     installpkg("hyfetch")
 
 with head("nerdfonts"):
