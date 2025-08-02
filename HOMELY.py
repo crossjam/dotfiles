@@ -1,10 +1,14 @@
 import os
 import platform
 import shutil
+import tarfile
 import tempfile
 import time
 
+from io import BytesIO
 from pathlib import Path
+
+import requests
 
 from homely.files import symlink, mkdir, download
 from homely.install import installpkg
@@ -84,9 +88,10 @@ installpkg("tree")
 installpkg("fd", apt="fd-find")
 installpkg("ripgrep")
 installpkg("bat")
+installpkg("rustup")
+
 if IS_MACOS:
     installpkg("bash-preexec")
-    installpkg("rustup")
     installpkg("fzf")  # ubuntu has an ancient version
 
 installpkg("direnv")
@@ -175,6 +180,40 @@ with head("nerdfonts"):
         installpkg("fonts-powerline")
         installpkg("fonts-firacode")
 
+
+def install_latest_fzf(dest_dir="~/.local/bin"):
+    # Get latest release metadata from GitHub API
+    url = "https://api.github.com/repos/junegunn/fzf/releases/latest"
+    resp = requests.get(url)
+    resp.raise_for_status()
+    release = resp.json()
+
+    # Find the right asset
+    asset_url = next(
+        asset["browser_download_url"]
+        for asset in release["assets"]
+        if "linux_amd64" in asset["name"] and asset["name"].endswith(".tar.gz")
+    )
+
+    note(f"Downloading: {asset_url}")
+    tar_resp = requests.get(asset_url)
+    tar_resp.raise_for_status()
+
+    # Ensure destination directory exists
+    os.makedirs(dest_dir, exist_ok=True)
+
+    # Extract just the fzf binary
+    with tarfile.open(fileobj=BytesIO(tar_resp.content), mode="r:gz") as tar:
+        fzf_member = tar.getmember("fzf")
+        fzf_member.name = os.path.basename(fzf_member.name)  # prevent path traversal
+        tar.extract(fzf_member, path=dest_dir)
+
+    note(f"fzf installed to {os.path.join(dest_dir, 'fzf')}")
+
+
+with head("fzf"):
+    if IS_LINUX and (not haveexecutable("fzf")):
+        install_latest_fzf()
 
 INSTALL_DOTFILES = [
     # We use plain names for dot files so they

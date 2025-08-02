@@ -23,7 +23,7 @@ fi
 
 # Personal fork with fixes for asyncio deprecations
 if ! uv tool list | grep -q homely; then
-    uv tool install "homely @ git+https://github.com/crossjam/homely"
+    uv tool install --with requests --managed-python "homely @ git+https://github.com/crossjam/homely"
 fi
 
 homely add dotfiles
