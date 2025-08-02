@@ -149,10 +149,11 @@ def rustup_cargo_path():
 @section
 def cargo():
     with head("cargo"):
-        CARGO_PATH = rustup_cargo_path()
         execute(["rustup", "toolchain", "install", "beta"])
         execute(["rustup", "update"])
         execute(["rustup", "default", "beta"])
+
+        CARGO_PATH = rustup_cargo_path()
 
         haveexecutable("zoxide") or execute(
             [CARGO_PATH, "install", "zoxide", "--locked"]
