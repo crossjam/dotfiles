@@ -182,6 +182,10 @@ with head("nerdfonts"):
 
 
 def install_latest_fzf(dest_dir="~/.local/bin"):
+    # Expand and resolve the destination directory
+    dest_path = Path(dest_dir).expanduser().resolve()
+    dest_path.mkdir(parents=True, exist_ok=True)
+
     # Get latest release metadata from GitHub API
     url = "https://api.github.com/repos/junegunn/fzf/releases/latest"
     resp = requests.get(url)
@@ -206,9 +210,12 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
     with tarfile.open(fileobj=BytesIO(tar_resp.content), mode="r:gz") as tar:
         fzf_member = tar.getmember("fzf")
         fzf_member.name = os.path.basename(fzf_member.name)  # prevent path traversal
-        tar.extract(fzf_member, path=dest_dir)
+        tar.extract(fzf_member, path=dest_path)
 
-    note(f"fzf installed to {os.path.join(dest_dir, 'fzf')}")
+    fzf_bin = dest_path / "fzf"
+    fzf_bin.chmod(fzf_bin.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+    print(f"fzf installed to {fzf_bin}")
 
 
 with head("fzf"):
