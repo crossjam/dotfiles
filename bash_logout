@@ -1,1 +1,1 @@
-emacsclient --alternate-editor="" --no-wait --eval "(kill-emacs)"
+trap 'emacsclient --eval "(kill-emacs)" >/dev/null 2>&1' EXIT
