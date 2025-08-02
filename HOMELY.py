@@ -1,6 +1,7 @@
 import os
 import platform
 import shutil
+import stat
 import tarfile
 import tempfile
 import time
