@@ -25,6 +25,7 @@ export PYTHONUSERBASE=$HOME/.local
 
 if [[ $OSTYPE == "darwin"* ]]; then
     PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
+    PATH="$PATH:$(brew --prefix rustup)/bin"
 fi
 
 
