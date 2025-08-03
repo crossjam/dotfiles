@@ -395,8 +395,8 @@ def consoleinfo():
         if IS_MACOS:
             installpkg("fastfetch")
         elif is_raspberry_pi():
-            haveexecutable("newofetch") or execute(
-                ["uv", "install", "--managed-python", "hyfetch"]
+            haveexecutable("neowofetch") or execute(
+                ["uv", "tool", "install", "--managed-python", "hyfetch"]
             )
         else:
             installpkg("hyfetch")
