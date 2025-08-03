@@ -322,7 +322,7 @@ def userpkgs():
             note(f"Installing rustup via: {RUSTUP_URL}")
             download(RUSTUP_URL, "~/dotfiles/rustup.sh")
             execute(["sh", "~/dotfiles/rustup.sh", "-y"])
-            RUSTUP_CMD = Path("~") / ".cargo" / "bin" / "rustup"
+            RUSTUP_CMD = Path("~").expanduser() / ".cargo" / "bin" / "rustup"
             note(f"RUSTUP_CMD: {RUSTUP_CMD}")
             
         with head("fzf"):
