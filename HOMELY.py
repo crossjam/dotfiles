@@ -99,13 +99,36 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
     resp.raise_for_status()
     release = resp.json()
 
-    # Find the right asset
-    asset_url = next(
-        asset["browser_download_url"]
-        for asset in release["assets"]
-        if "linux_amd64" in asset["name"] and asset["name"].endswith(".tar.gz")
-    )
+     if system == "darwin":
+        if machine == "arm64":
+            target = "darwin_arm64"
+        else:
+            target = "darwin_amd64"
+    elif system == "linux":
+        if is_raspberry_pi():
+            if machine in ("armv6l", "armv7l"):
+                target = "linux_armv6"
+            elif machine == "aarch64":
+                target = "linux_arm64"
+            else:
+                raise RuntimeError(f"Unrecognized Raspberry Pi architecture: {machine}")
+        else:
+            if machine == "x86_64":
+                target = "linux_amd64"
+            elif machine == "aarch64":
+                target = "linux_arm64"  # Could be a generic 64-bit ARM Linux server
+            else:
+                raise RuntimeError(f"Unsupported Linux architecture: {machine}")
+    else:
+        raise RuntimeError(f"Unsupported system: {system}")
 
+    # Find matching asset
+    for asset in release["assets"]:
+        name = asset["name"]
+        if target in name and name.endswith(".tar.gz"):
+            asset_url = asset["browser_download_url"]
+            break
+        
     note(f"Downloading: {asset_url}")
     tar_resp = requests.get(asset_url)
     tar_resp.raise_for_status()
