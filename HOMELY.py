@@ -161,7 +161,7 @@ def detect_arch():
         raise RuntimeError(f"Unsupported architecture: {machine}")
 
 def install_starship():
-    target_dir = Path("~/.local/bin").expanduser()
+    target_dir = Path("~/.cargo/bin").expanduser()
     target_dir.mkdir(parents=True, exist_ok=True)
 
     arch = detect_arch()
@@ -200,7 +200,7 @@ def detect_atuin_arch():
         raise RuntimeError(f"Unsupported architecture: {machine}")
 
 def install_atuin():
-    target_dir = Path("~/.local/bin").expanduser()
+    target_dir = Path("~/.cargo/bin").expanduser()
     target_dir.mkdir(parents=True, exist_ok=True)
 
     arch = detect_atuin_arch()
