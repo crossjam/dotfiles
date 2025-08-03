@@ -93,18 +93,20 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
     dest_path = Path(dest_dir).expanduser().resolve()
     dest_path.mkdir(parents=True, exist_ok=True)
 
+    machine = platform.machine()
+
     # Get latest release metadata from GitHub API
     url = "https://api.github.com/repos/junegunn/fzf/releases/latest"
     resp = requests.get(url)
     resp.raise_for_status()
     release = resp.json()
 
-    if system == "darwin":
+    if IS_MACOS:
         if machine == "arm64":
             target = "darwin_arm64"
         else:
             target = "darwin_amd64"
-    elif system == "linux":
+    elif IS_LINUX:
         if is_raspberry_pi():
             if machine in ("armv6l", "armv7l"):
                 target = "linux_armv6"
@@ -127,6 +129,7 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
         name = asset["name"]
         if target in name and name.endswith(".tar.gz"):
             asset_url = asset["browser_download_url"]
+            note(f"Found matching asset_url: {asset_url}")
             break
 
     note(f"Downloading: {asset_url}")
