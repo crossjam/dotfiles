@@ -1,6 +1,7 @@
 if [[ "$(uname)" != "Darwin" ]]; then
-  # Your logout logic here, e.g.:
   if ! screen -list 2>/dev/null | grep -q '\.screen'; then
-    emacsclient --eval '(kill-emacs)' >/dev/null 2>&1
+    if emacsclient --alternate-editor=none -e '(emacs-pid)' >/dev/null 2>&1; then
+      emacsclient --eval '(kill-emacs)' >/dev/null 2>&1
+    fi
   fi
 fi
