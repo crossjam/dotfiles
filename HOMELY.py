@@ -99,7 +99,7 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
     resp.raise_for_status()
     release = resp.json()
 
-     if system == "darwin":
+    if system == "darwin":
         if machine == "arm64":
             target = "darwin_arm64"
         else:
@@ -128,7 +128,7 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
         if target in name and name.endswith(".tar.gz"):
             asset_url = asset["browser_download_url"]
             break
-        
+
     note(f"Downloading: {asset_url}")
     tar_resp = requests.get(asset_url)
     tar_resp.raise_for_status()
