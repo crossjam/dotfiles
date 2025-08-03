@@ -11,21 +11,14 @@ export DEBIAN_FRONTEND=noninteractive
 
 export PYTHONUSERBASE=$HOME/.local
 
-# Bootstrap pipx into the account
-# On macOS, it's best to install the python.org version of python
-if [[ $OSTYPE == "darwin"* ]]; then
-    PIP_REQUIRE_VIRTUALENV=false /Library/Frameworks/Python.framework/Versions/Current/bin/python3 -m pip install --user pipx
-  else
-    PIP_REQUIRE_VIRTUALENV=false python3 -m pip install --user pipx --break-system-packages
-fi    
+PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin
 
-PATH=$PATH:$HOME/.local/bin
-# pipx install homely
-# pipx install git+ssh://git@github.com/crossjam/homely.git
+# Bootstrap uv into the account
+curl -LsSf https://astral.sh/uv/0.8.4/install.sh | sh
 
-# Bootstrap uv into the account with pipx
-if ! pipx list | grep -q "package uv"; then
-    pipx install uv
+# Bootstrap pipx into the account with uv
+if ! uv tool list | grep -q pipx; then
+    uv tool install --managed-python pipx
 fi
 
 # Bootstrap homely into the account with uv
@@ -35,5 +28,4 @@ if ! uv tool list | grep -q homely; then
 fi
 
 homely add dotfiles
-unset GIT_SSH_COMMAND
 
