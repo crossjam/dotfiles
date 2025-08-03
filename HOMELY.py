@@ -1,3 +1,4 @@
+import io
 import os
 import platform
 import shutil
@@ -48,7 +49,7 @@ libpq-dev python3-dev python3-pip python3-psycopg2
 """
 
 RUST_PACKAGES = """
-cmake rustup
+cmake
 """
 
 HOMEBREW_INSTALL_SCRIPT = (
@@ -58,6 +59,9 @@ HOMEBREW_INSTALL_SCRIPT = (
 BASH_PREEXEC_URL = (
     "https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh"
 )
+
+RUSTUP_URL = "https://sh.rustup.rs"
+RUSTUP_CMD = "rustup"
 
 INSTALL_DOTFILES = [
     # We use plain names for dot files so they
@@ -121,13 +125,117 @@ def install_latest_fzf(dest_dir="~/.local/bin"):
     print(f"fzf installed to {fzf_bin}")
 
 
+def is_raspberry_pi():
+    # Check ARM architecture
+    arch = platform.machine()
+    if arch not in ("armv6l", "armv7l", "aarch64"):
+        return False
+
+    # Check /proc/cpuinfo for Raspberry Pi hardware string
+    try:
+        with open("/proc/cpuinfo") as f:
+            for line in f:
+                if line.startswith("Hardware") and "BCM" in line:
+                    return True
+                if "Raspberry Pi" in line:
+                    return True
+    except FileNotFoundError:
+        return False
+
+    # Fallback: check presence of Pi-specific device tree
+    model_path = Path("/proc/device-tree/model")
+    if model_path.exists():
+        model = model_path.read_text(errors="ignore")
+        if "Raspberry Pi" in model:
+            return True
+
+    return False
+
+def detect_arch():
+    machine = platform.machine()
+    if machine == "armv7l":
+        return "armv7-unknown-linux-musl"
+    elif machine == "aarch64":
+        return "aarch64-unknown-linux-musl"
+    else:
+        raise RuntimeError(f"Unsupported architecture: {machine}")
+
+def install_starship():
+    target_dir = Path("~/.local/bin").expanduser()
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    arch = detect_arch()
+    note(f"Detected architecture: {arch}")
+
+    api_url = "https://api.github.com/repos/starship/starship/releases/latest"
+    release = requests.get(api_url).json()
+
+    asset_url = next(
+        asset["browser_download_url"]
+        for asset in release["assets"]
+        if arch in asset["name"] and asset["name"].endswith(".tar.gz")
+    )
+
+    note(f"Downloading: {asset_url}")
+    response = requests.get(asset_url)
+    with tarfile.open(fileobj=io.BytesIO(response.content), mode="r:gz") as tar:
+        for member in tar.getmembers():
+            if member.name.endswith("starship"):
+                member.name = "starship"
+                tar.extract(member, path=target_dir)
+                starship_path = target_dir / "starship"
+                starship_path.chmod(0o755)
+                note(f"Installed to: {starship_path}")
+                return
+
+    raise RuntimeError("Starship binary not found in archive")
+
+def detect_atuin_arch():
+    machine = platform.machine()
+    if machine == "armv7l":
+        return "armv7-unknown-linux-gnu"
+    elif machine == "aarch64":
+        return "aarch64-unknown-linux-gnu"
+    else:
+        raise RuntimeError(f"Unsupported architecture: {machine}")
+
+def install_atuin():
+    target_dir = Path("~/.local/bin").expanduser()
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    arch = detect_atuin_arch()
+    note(f"Detected architecture: {arch}")
+
+    api_url = "https://api.github.com/repos/atuinsh/atuin/releases/latest"
+    release = requests.get(api_url).json()
+
+    asset_url = next(
+        asset["browser_download_url"]
+        for asset in release["assets"]
+        if arch in asset["name"] and asset["name"].endswith(".tar.gz")
+    )
+
+    note(f"Downloading: {asset_url}")
+    response = requests.get(asset_url)
+    with tarfile.open(fileobj=io.BytesIO(response.content), mode="r:gz") as tar:
+        for member in tar.getmembers():
+            if member.name.endswith("/atuin"):
+                member.name = "atuin"  # flatten path
+                tar.extract(member, path=target_dir)
+                atuin_path = target_dir / "atuin"
+                atuin_path.chmod(0o755)
+                note(f"Installed to: {atuin_path}")
+                return
+
+    raise RuntimeError("Atuin binary not found in archive")
+
 # On a fresh macos install, need to locate the cargo bin path
 # Could make an assumption about /opt/homebrew/opt/rustup/bin
 # But let's just ask rustup
 
 
 def rustup_cargo_path():
-    exitcode, output, _ = execute(["rustup", "which", "cargo"], stdout=True)
+    exitcode, output, _ = execute([RUSTUP_CMD, "which", "cargo"], stdout=True)
     if not exitcode:
         output = output.decode("ascii")
         outlines = [l.strip() for l in output.split("\n") if l.strip()]
@@ -191,6 +299,7 @@ def ubuntu():
 @section
 def userpkgs():
 
+    installpkg("screen")
     installpkg("emacs", apt="emacs-nox")
     installpkg("black")
     installpkg("htop")
@@ -200,13 +309,25 @@ def userpkgs():
     installpkg("fd", apt="fd-find")
     installpkg("ripgrep")
     installpkg("bat")
-    installpkg("rustup")
     installpkg("direnv")
 
     if IS_LINUX:
         installpkg("net-tools")
+        if ! is_raspberry_pi():
+            installpkg("rustup")
+        elif haveexecutable("rustup"):
+            note("rustup alread installed")
+        else:
+            # Grab the rustup script and execute it with -y
+            note(f"Installing rustup via: {RUSTUP_URL}")
+            download(RUSTUP_URL, "~/dotfiles/rustup.sh")
+            execute(["sh", "~/dotfiles/rustup.sh", "-y"])
+            RUSTUP_CMD = Path("~") / ".cargo" / "bin" / "rustup"
+            note(f"RUSTUP_CMD: {RUSTUP_CMD}")
+            
         with head("fzf"):
             not haveexecutable("fzf") and install_latest_fzf()
+
 
     if IS_MACOS:
         installpkg("bash-preexec")
@@ -217,23 +338,29 @@ def userpkgs():
 @section
 def cargo():
     with head("cargo"):
-        execute(["rustup", "toolchain", "install", "beta"])
-        execute(["rustup", "update"])
-        execute(["rustup", "default", "beta"])
+        execute([RUSTUP_CMD, "toolchain", "install", "beta"])
+        execute([RUSTUP_CMD, "update"])
+        execute([RUSTUP_CMD, "default", "beta"])
 
         CARGO_PATH = rustup_cargo_path()
+        EXTRA_ARGS = []
+        
+        if is_raspberry_pi():
+            haveexecutable("starship") or install_starship()
+            haveexecutable("atuin") or install_atuin()
+            
+        else:
+            haveexecutable("zoxide") or execute(
+                [CARGO_PATH, "install", "zoxide", "--locked"] + EXTRA_ARGS
+            )
 
-        # these three are essential to the highly customized bash shell
+            haveexecutable("starship") or execute(
+                [CARGO_PATH, "install", "starship", "--locked"] + EXTRA_ARGS
+            )
 
-        haveexecutable("zoxide") or execute(
-            [CARGO_PATH, "install", "zoxide", "--locked"]
-        )
-
-        haveexecutable("starship") or execute(
-            [CARGO_PATH, "install", "starship", "--locked"]
-        )
-
-        haveexecutable("atuin") or execute([CARGO_PATH, "install", "atuin", "--locked"])
+            haveexecutable("atuin") or execute(
+                [CARGO_PATH, "install", "atuin", "--locked"] + EXTRA_ARGS
+            )
 
 
 @section
