@@ -151,6 +151,7 @@ def is_raspberry_pi():
 
     return False
 
+
 def detect_arch():
     machine = platform.machine()
     if machine == "armv7l":
@@ -159,6 +160,7 @@ def detect_arch():
         return "aarch64-unknown-linux-musl"
     else:
         raise RuntimeError(f"Unsupported architecture: {machine}")
+
 
 def install_starship():
     target_dir = Path("~/.cargo/bin").expanduser()
@@ -190,6 +192,7 @@ def install_starship():
 
     raise RuntimeError("Starship binary not found in archive")
 
+
 def detect_atuin_arch():
     machine = platform.machine()
     if machine == "armv7l":
@@ -198,6 +201,7 @@ def detect_atuin_arch():
         return "aarch64-unknown-linux-gnu"
     else:
         raise RuntimeError(f"Unsupported architecture: {machine}")
+
 
 def install_atuin():
     target_dir = Path("~/.cargo/bin").expanduser()
@@ -228,6 +232,7 @@ def install_atuin():
                 return
 
     raise RuntimeError("Atuin binary not found in archive")
+
 
 # On a fresh macos install, need to locate the cargo bin path
 # Could make an assumption about /opt/homebrew/opt/rustup/bin
@@ -313,7 +318,7 @@ def userpkgs():
 
     if IS_LINUX:
         installpkg("net-tools")
-        if ! is_raspberry_pi():
+        if not is_raspberry_pi():
             installpkg("rustup")
         elif haveexecutable("rustup"):
             note("rustup alread installed")
@@ -324,10 +329,9 @@ def userpkgs():
             execute(["sh", "~/dotfiles/rustup.sh", "-y"])
             RUSTUP_CMD = Path("~").expanduser() / ".cargo" / "bin" / "rustup"
             note(f"RUSTUP_CMD: {RUSTUP_CMD}")
-            
+
         with head("fzf"):
             not haveexecutable("fzf") and install_latest_fzf()
-
 
     if IS_MACOS:
         installpkg("bash-preexec")
@@ -344,11 +348,11 @@ def cargo():
 
         CARGO_PATH = rustup_cargo_path()
         EXTRA_ARGS = []
-        
+
         if is_raspberry_pi():
             haveexecutable("starship") or install_starship()
             haveexecutable("atuin") or install_atuin()
-            
+
         else:
             haveexecutable("zoxide") or execute(
                 [CARGO_PATH, "install", "zoxide", "--locked"] + EXTRA_ARGS
