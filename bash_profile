@@ -60,3 +60,6 @@ fi
 
 export PATH
 
+if [[ -x $HOME/.local/bin/neowofetch ]]; then
+   neowofetch
+fi
