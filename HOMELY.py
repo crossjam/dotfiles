@@ -28,6 +28,7 @@ mkdir("~/.emacs.d/snippets")
 mkdir("~/.pip")
 mkdir("~/.config/direnv")
 mkdir("~/.config/atuin")
+mkdir("~/.config/neofetch")
 mkdir(str(iterm2_dir))
 
 if not dotfiles_old_dir.exists():
@@ -83,6 +84,7 @@ INSTALL_DOTFILES = [
     ("direnvrc", "~/.config/direnv/direnvrc"),
     ("direnv_toml", "~/.config/direnv/direnv.toml"),
     ("starship.toml", "~/.config/starship.toml"),
+    ("neofetch_config_conf", "~/.config/neofetch/config.conf"),
 ]
 
 ### Helper functions
