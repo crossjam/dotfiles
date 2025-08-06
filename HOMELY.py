@@ -343,6 +343,7 @@ def userpkgs():
     installpkg("ripgrep")
     installpkg("bat")
     installpkg("direnv")
+    installpkg("duf")
 
     if IS_LINUX:
         installpkg("net-tools")
