@@ -380,10 +380,6 @@ def cargo():
             haveexecutable("atuin") or install_atuin()
 
         else:
-            haveexecutable("zoxide") or execute(
-                [CARGO_PATH, "install", "zoxide", "--locked"] + EXTRA_ARGS
-            )
-
             haveexecutable("starship") or execute(
                 [CARGO_PATH, "install", "starship", "--locked"] + EXTRA_ARGS
             )
@@ -391,6 +387,10 @@ def cargo():
             haveexecutable("atuin") or execute(
                 [CARGO_PATH, "install", "atuin", "--locked"] + EXTRA_ARGS
             )
+
+        haveexecutable("zoxide") or execute(
+            [CARGO_PATH, "install", "zoxide", "--locked", "-j", "1"] + EXTRA_ARGS
+        )
 
 
 @section
