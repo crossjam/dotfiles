@@ -15,6 +15,13 @@ export ALTERNATE_EDITOR=""
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+
+if [[ -x $HOME/.local/bin/neowofetch ]]; then
+   neowofetch --package_managers off
+elif command -v brew >/dev/null 2>&1 && brew --prefix ne >/dev/null 2>&1; then
+   $(brew --prefix hyfetch)/bin/neowofetch --package_managers off
+fi
+
 # Following advice from Glyph Lefkowitz on just using the PSF Python on macos
 #
 # https://blog.glyph.im/2023/08/get-your-mac-python-from-python-dot-org.html
@@ -59,7 +66,3 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 export PATH
-
-if [[ -x $HOME/.local/bin/neowofetch ]]; then
-   neowofetch --package_managers off
-fi
