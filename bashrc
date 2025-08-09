@@ -32,7 +32,9 @@ if [[ "$INSIDE_EMACS" == *vterm* ]]; then
     done
     vterm_printf "51;E$vterm_elisp"
   }
-
+elif [[ "$INSIDE_EMACS" == *comint* ]]; then
+  export TERM=xterm-256color
+  set -o emacs
 fi
 
 # If not running interactively, don't do anything
@@ -72,8 +74,6 @@ fi
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"  # Apple Silicon
 
 [[ -r "~/.config/op/plugins.sh" ]] && . ~/.config/op/plugins.sh
-
-alias claude="$HOME/.claude/local/claude"
 
 uvp() {
     local project_name
