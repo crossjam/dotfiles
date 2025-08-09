@@ -363,6 +363,7 @@ def userpkgs():
             not haveexecutable("fzf") and install_latest_fzf()
 
     if IS_MACOS:
+        installpkg("rustup")
         installpkg("bash-preexec")
         installpkg("fzf")  # ubuntu has an ancient version
         installpkg("coreutils")
