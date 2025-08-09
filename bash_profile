@@ -18,7 +18,7 @@ export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 if [[ -x $HOME/.local/bin/neowofetch ]]; then
    neowofetch --package_managers off --pacakge_minimal
-elif command -v brew >/dev/null 2>&1 && brew --prefix ne >/dev/null 2>&1; then
+elif command -v brew >/dev/null 2>&1 && brew --prefix hyfetch >/dev/null 2>&1; then
    $(brew --prefix hyfetch)/bin/neowofetch --package_managers off --package_minimal
 fi
 
