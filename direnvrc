@@ -3,3 +3,5 @@ layout_python() {
   PATH_add "$VIRTUAL_ENV/bin"
   export VIRTUAL_ENV
 }
+
+dotenv_if_exists
