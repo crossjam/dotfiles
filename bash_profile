@@ -66,3 +66,8 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 export PATH
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/crossjam/.lmstudio/bin"
+# End of LM Studio CLI section
+

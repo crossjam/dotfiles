@@ -176,3 +176,8 @@ if [[ "$INSIDE_EMACS" == *vterm* ]]; then
 
    starship_precmd_user_func="vterm_prompt_end"
 fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/crossjam/.lmstudio/bin"
+# End of LM Studio CLI section
+
