@@ -64,6 +64,12 @@
 (use-package json-mode)
 (use-package jq-mode)
 (use-package markdown-mode)
+(use-package polymode :ensure t)
+(use-package poly-markdown
+  :ensure t
+  :mode
+  ("\\.Rmd\\'" . poly-markdown-mode)
+  ("\\.qmd\\'" . poly-markdown-mode))
 (use-package blacken)
 
 (use-package ansi-color)
