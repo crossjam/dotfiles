@@ -129,7 +129,7 @@ uvpi() {
     elif [ -d ".venv" ]; then
      	 UV_PROJECT_ENVIRONMENT="$PWD/.venv"
     else
-	 UV_PROJECT_ENVIRONMENT="$PWD/$project_name"
+	 UV_PROJECT_ENVIRONMENT="$PWD/.$project_name"
     fi
 
     echo "UV_PROJECT_ENVIRONMENT=$UV_PROJECT_ENVIRONMENT"
