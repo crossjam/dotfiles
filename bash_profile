@@ -15,11 +15,12 @@ export ALTERNATE_EDITOR=""
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
-
-if [[ -x $HOME/.local/bin/neowofetch ]]; then
-   neowofetch --package_managers off --pacakge_minimal
-elif command -v brew >/dev/null 2>&1 && brew --prefix hyfetch >/dev/null 2>&1; then
-   $(brew --prefix hyfetch)/bin/neowofetch --package_managers off --package_minimal
+if [[ -z "$CLAUDECODE" ]]; then
+   if [[ -x $HOME/.local/bin/neowofetch ]]; then
+      neowofetch --package_managers off --package_minimal
+   elif command -v brew >/dev/null 2>&1 && brew --prefix hyfetch >/dev/null 2>&1; then
+      $(brew --prefix hyfetch)/bin/neowofetch --package_managers off --package_minimal
+   fi
 fi
 
 # Following advice from Glyph Lefkowitz on just using the PSF Python on macos
@@ -28,6 +29,7 @@ fi
 #
 
 if [[ $OSTYPE == "darwin"* ]]; then
+   PATH="/Library/Frameworks/Python.framework/Versions/3.14/bin:${PATH}"
    PATH="/Library/Frameworks/Python.framework/Versions/3.13/bin:${PATH}"
    PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
    PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
@@ -71,3 +73,4 @@ export PATH
 export PATH="$PATH:/Users/crossjam/.lmstudio/bin"
 # End of LM Studio CLI section
 
+export PATH
