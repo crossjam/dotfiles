@@ -1,4 +1,41 @@
-(setenv "SHELL" "/opt/homebrew/bin/bash")
+(when (eq system-type 'darwin)
+  (defun my/brew-prefix ()
+    (require 'subr-x)
+
+    "Return Homebrew prefix, or best-guess if brew isn't on PATH yet.
+     Resolves correctly for Intel (/usr/local) and Apple Silicon (/opt/homebrew).
+     If Emacs is running under Rosetta (x86_64 on Apple Silicon), prefers /usr/local."
+
+    (let* ((emacs-arch   (cond
+			  ((string-match-p "aarch64" system-configuration) 'arm64)
+                          ((string-match-p "x86_64"  system-configuration) 'x86_64)
+                          (t nil)))
+	   (guess        (pcase emacs-arch
+			   ('arm64  "/opt/homebrew")
+			   ('x86_64 "/usr/local")
+			   (_       "/usr/local")))  ; safe default
+	   (brew-exe     (or (executable-find "brew")
+                             ;; Try common locations before PATH is fixed:
+			     (car (seq-filter #'file-executable-p
+					      '("/opt/homebrew/bin/brew"
+                                                "/usr/local/bin/brew"))))))
+      (if brew-exe
+	  (let* ((out  (with-temp-buffer
+			 (call-process brew-exe nil t nil "--prefix")
+			 (string-trim (buffer-string)))))
+	    (if (and out (file-directory-p out)) out guess))
+	guess)))
+  )
+
+(my/brew-prefix)
+
+(let* ((prefix (my/brew-prefix))
+       (bin    (expand-file-name "bin"  prefix))
+       (bash   (expand-file-name "bash" bin)))
+
+  (setenv "SHELL" bash)
+  (setq brew-bash bash)
+  )
 
 (setq-default custom-file
 	      (expand-file-name ".custom.el" user-emacs-directory))
@@ -6,7 +43,6 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-(setq vterm-shell "/opt/homebrew/bin/bash")
 
 (require 'package)
 (require 'tramp)
@@ -54,7 +90,7 @@
 (use-package json)
 (use-package vterm
   :custom
-  (vterm-shell "/opt/homebrew/bin/bash"))
+  (vterm-shell brew-bash))
 
 (use-package rg :ensure t)
 (use-package wgrep-ag :ensure t)

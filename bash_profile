@@ -15,7 +15,7 @@ export ALTERNATE_EDITOR=""
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
-if [[ -z "$CLAUDECODE" ]]; then
+if [[ $- == *i* && -z "$CLAUDECODE" && -z "$CODEX_SANDBOX" ]]; then
    if [[ -x $HOME/.local/bin/neowofetch ]]; then
       neowofetch --package_managers off --package_minimal
    elif command -v brew >/dev/null 2>&1 && brew --prefix hyfetch >/dev/null 2>&1; then
