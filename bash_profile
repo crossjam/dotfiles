@@ -1,3 +1,7 @@
+has() {
+  type "$1" &>/dev/null
+}
+
 if [[ -x /opt/homebrew/bin/brew ]]; then
    eval $(/opt/homebrew/bin/brew shellenv)
 elif [[ -x /usr/local/bin/brew ]]; then
@@ -14,8 +18,6 @@ export ALTERNATE_EDITOR=""
 
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
-
-source <(direnv stdlib)
 
 if [[ $- == *i* && -z "$CLAUDECODE" && -z "$CODEX_SANDBOX" ]]; then
    if has neowofetch; then
