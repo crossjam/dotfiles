@@ -15,12 +15,12 @@ export ALTERNATE_EDITOR=""
 export PATH=$PATH:$HOME/.local/bin:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+source <(direnv stdlib)
+
 if [[ $- == *i* && -z "$CLAUDECODE" && -z "$CODEX_SANDBOX" ]]; then
-   if [[ -x $HOME/.local/bin/neowofetch ]]; then
+   if has neowofetch; then
       neowofetch --package_managers off --package_minimal
-   elif command -v brew >/dev/null 2>&1 && brew --prefix hyfetch >/dev/null 2>&1; then
-      $(brew --prefix hyfetch)/bin/neowofetch --package_managers off --package_minimal
-   fi
+   fi;
 fi
 
 # Following advice from Glyph Lefkowitz on just using the PSF Python on macos
