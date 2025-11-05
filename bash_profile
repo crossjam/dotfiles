@@ -35,8 +35,8 @@ if [[ $OSTYPE == "darwin"* ]]; then
    PATH="/Library/Frameworks/Python.framework/Versions/3.13/bin:${PATH}"
    PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
    PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
-   
-   if command -v brew >/dev/null 2>&1 && command -v rustup >/dev/null 2>&1; then
+
+   if has rustup; then
       rustup_path="$(brew --prefix rustup)/bin"
       cargo_path=$(rustup which cargo)
       echo "rustup tools are located at: $rustup_path"
