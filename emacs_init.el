@@ -52,10 +52,19 @@
  load-prefer-newer t
  package-enable-at-startup nil)
 
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
+(setq package-archives
+      '(("gnu"    . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ;; Uncomment if you truly need the more curated but slower-to-update builds
+        ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa"  . "https://melpa.org/packages/")))
+
+(setq package-archive-priorities
+      '(("gnu"    . 5)
+        ("nongnu" . 4)
+        ("melpa"  . 3)
+        ("melpa-stable" . 2)))
 
 (package-initialize)
 
@@ -85,7 +94,18 @@
   :config (exec-path-from-shell-initialize))
 
 
-(use-package org :ensure org-plus-contrib)
+(use-package org
+  :defer t
+  :hook (auto-save . org-save-all-org-buffers)
+  :ensure t)
+
+(use-package org-contrib
+  :after org
+  :ensure t
+  :config
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines)))
+
 (use-package magit)
 (use-package json)
 (use-package vterm
@@ -182,12 +202,8 @@
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 
-(add-hook 'auto-save-hook 'org-save-all-org-buffers)
-
 (add-hook 'markdown-mode-hook 'electric-quote-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
-
-
 
 (with-eval-after-load 'tramp
   (setq tramp-ssh-controlmaster-options
