@@ -85,6 +85,7 @@ INSTALL_DOTFILES = [
     ("direnv_toml", "~/.config/direnv/direnv.toml"),
     ("starship.toml", "~/.config/starship.toml"),
     ("neofetch_config_conf", "~/.config/neofetch/config.conf"),
+    ("personal-fork.sh", "~/.local/bin/personal-fork"),
 ]
 
 ### Helper functions
