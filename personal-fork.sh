@@ -66,7 +66,7 @@ done
 # --- Parse positional + named arguments ---
 SOURCE_REPO=""
 TARGET_OWNER=""
-VISIBILITY="private"
+VISIBILITY="public"
 PROTOCOL=""
 RENAME_TO=""
 
