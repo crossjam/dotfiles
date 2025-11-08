@@ -3,50 +3,96 @@ set -euo pipefail
 
 # personal-fork.sh
 #
+# Description:
+#   Clone a GitHub repo, rename its origin remote to "upstream",
+#   create a new personal repo with the same (or renamed) name,
+#   set that as "origin", and push all branches and tags.
+#
 # Usage:
-#   personal-fork.sh <source_repo> [--owner <target_owner>] [--visibility public|private|internal] [--protocol ssh|https] [--rename <new_name>]
+#   personal-fork.sh <source_repo>
+#       [--owner <target_owner>]
+#       [--visibility public|private|internal]
+#       [--protocol ssh|https]
+#       [--rename <new_name>]
+#       [--help]
 #
 # Examples:
 #   personal-fork.sh https://github.com/org/project.git
 #   personal-fork.sh org/project --owner my-username --visibility private
 #   personal-fork.sh org/project --rename project-fork --protocol ssh
 #
-# What it does:
-#   1. Clone the source repo
-#   2. Rename 'origin' → 'upstream'
-#   3. Create a new repo under your account (same name as source, or --rename)
-#   4. Add a new 'origin' remote pointing to your personal repo
-#   5. Push all branches and tags
+# Requirements:
+#   - GitHub CLI (`gh`) logged in: run `gh auth login`
+#   - Git installed
 
 usage() {
-  echo "Usage: $0 <source_repo> [--owner <target_owner>] [--visibility public|private|internal] [--protocol ssh|https] [--rename <new_name>]" >&2
-  exit 1
+  cat <<EOF
+Usage:
+  $0 <source_repo> [--owner <target_owner>] [--visibility public|private|internal]
+                   [--protocol ssh|https] [--rename <new_name>] [--help]
+
+Options:
+  --owner <target_owner>       GitHub username or org to own the new repo (default: your authenticated user)
+  --visibility <level>         Repo visibility: public, private, or internal (default: private)
+  --protocol <type>            Protocol for git remotes: ssh or https (default: uses gh config)
+  --rename <new_name>          Optional new name for the created repo
+  --help, -h                   Show this help message and exit
+
+Examples:
+  $0 https://github.com/org/project.git
+  $0 org/project --owner my-username --visibility public
+  $0 org/project --rename project-fork --protocol ssh
+EOF
+  exit 0
 }
 
 # --- Sanity checks ---
 command -v gh >/dev/null 2>&1 || { echo "Error: 'gh' CLI required"; exit 1; }
 command -v git >/dev/null 2>&1 || { echo "Error: 'git' required"; exit 1; }
 
-[[ $# -lt 1 ]] && usage
+# --- Pre-check for help flag before requiring a positional argument ---
+if [[ $# -eq 0 ]]; then
+  usage
+fi
 
-SOURCE_REPO="$1"
-shift
+# Allow --help anywhere, even before source repo
+for arg in "$@"; do
+  case "$arg" in
+    --help|-h)
+      usage ;;
+  esac
+done
 
+# --- Parse positional + named arguments ---
+SOURCE_REPO=""
 TARGET_OWNER=""
 VISIBILITY="private"
 PROTOCOL=""
 RENAME_TO=""
 
+# First positional argument is SOURCE_REPO (if not starting with --)
+if [[ "$1" != --* ]]; then
+  SOURCE_REPO="$1"
+  shift
+fi
+
+# Parse remaining flags
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --owner) TARGET_OWNER="${2:-}"; shift 2 ;;
     --visibility) VISIBILITY="${2:-}"; shift 2 ;;
     --protocol) PROTOCOL="${2:-}"; shift 2 ;;
     --rename) RENAME_TO="${2:-}"; shift 2 ;;
-    -h|--help) usage ;;
+    --help|-h) usage ;;
     *) echo "Unknown argument: $1" >&2; usage ;;
   esac
 done
+
+# Still no source repo? show help
+if [[ -z "${SOURCE_REPO:-}" ]]; then
+  echo "Error: missing required <source_repo> argument." >&2
+  usage
+fi
 
 # --- Authentication ---
 if ! gh auth status >/dev/null 2>&1; then
@@ -129,3 +175,4 @@ git push -u origin --tags
 
 echo "✅ Done. Local remotes:"
 git remote -v
+
