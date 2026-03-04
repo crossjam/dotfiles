@@ -27,15 +27,18 @@
 	guess)))
   )
 
-(my/brew-prefix)
+(if (fboundp 'my/brew-prefix)
+    (progn
+      (my/brew-prefix)
 
-(let* ((prefix (my/brew-prefix))
-       (bin    (expand-file-name "bin"  prefix))
-       (bash   (expand-file-name "bash" bin)))
+      (let* ((prefix (my/brew-prefix))
+	     (bin    (expand-file-name "bin"  prefix))
+	     (bash   (expand-file-name "bash" bin)))
 
-  (setenv "SHELL" bash)
-  (setq brew-bash bash)
-  )
+	(setenv "SHELL" bash)
+	(setq brew-bash bash)
+	))
+  (setq brew-bash "/usr/local/bin/brew/bash"))
 
 (setq-default custom-file
 	      (expand-file-name ".custom.el" user-emacs-directory))
@@ -97,6 +100,7 @@
 (use-package org
   :defer t
   :hook (auto-save . org-save-all-org-buffers)
+  :pin gnu
   :ensure t)
 
 (use-package org-contrib
