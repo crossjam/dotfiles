@@ -114,7 +114,9 @@
 (use-package json)
 (use-package vterm
   :custom
-  (vterm-shell brew-bash))
+  (vterm-shell
+   (car (seq-filter #'file-executable-p  (list brew-bash "/bin/bash")))
+   ))
 
 (use-package rg :ensure t)
 (use-package wgrep-ag :ensure t)
