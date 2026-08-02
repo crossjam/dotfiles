@@ -36,31 +36,33 @@ if [[ $OSTYPE == "darwin"* ]]; then
    PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
    PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
 
-   if has rustup; then
-      rustup_path="$(brew --prefix rustup)/bin"
-      cargo_path=$(rustup which cargo)
-      echo "rustup tools are located at: $rustup_path"
-      echo "cargo is located at: $cargo_path"
-      PATH="$PATH:$rustup_path"
-    else  
-      echo "rustup is not installed or not in PATH"
-    fi
+   if [[ $- == *i* && -z "$CLAUDECODE" && -z "$CODEX_SANDBOX" ]]; then
+       if has rustup; then
+	   rustup_path="$(brew --prefix rustup)/bin"
+	   cargo_path=$(rustup which cargo)
+	   echo "rustup tools are located at: $rustup_path"
+	   echo "cargo is located at: $cargo_path"
+	   PATH="$PATH:$rustup_path"
+       else  
+	   echo "rustup is not installed or not in PATH"
+       fi
 
-   if command -v brew >/dev/null 2>&1 && brew --prefix libpq >/dev/null 2>&1; then
-      libpq_path="$(brew --prefix libpq)/bin"
-      echo "libpq tools are located at: $libpq_path"
-      PATH="$PATH:$libpq_path"
-    else  
-      echo "libpq is not installed or not in PATH"
-    fi
-
-    if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
+       if command -v brew >/dev/null 2>&1 && brew --prefix libpq >/dev/null 2>&1; then
+	   libpq_path="$(brew --prefix libpq)/bin"
+	   echo "libpq tools are located at: $libpq_path"
+	   PATH="$PATH:$libpq_path"
+       else  
+	   echo "libpq is not installed or not in PATH"
+       fi
+   fi
+   
+   if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
        export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-    fi
+   fi
 
-    if [[ -x "/Applications/Postgres.app/Contents/Versions/latest/bin/" ]]; then
+   if [[ -x "/Applications/Postgres.app/Contents/Versions/latest/bin/" ]]; then
        export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin/"
-    fi
+   fi
 fi
 
 if [ -n "$BASH_VERSION" ]; then
