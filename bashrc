@@ -148,6 +148,7 @@ uvpi() {
     direnv allow
 }
 
+export KATA_SERVER=https://katatracker.aegean-skate.ts.net
 
 # Assume the platforms I work on will only have one of the following
 [ -f /opt/homebrew/etc/profile.d/bash-preexec.sh ] && . /opt/homebrew/etc/profile.d/bash-preexec.sh
