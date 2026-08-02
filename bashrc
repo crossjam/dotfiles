@@ -181,3 +181,15 @@ fi
 export PATH="$PATH:/Users/crossjam/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+# Pi
+export PATH="/home/crossjam/.local/share/pi-node/node-v22.22.3-linux-x64/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/crossjam/.local/bin:$PATH"
+
+# opencode
+export PATH=/home/crossjam/.opencode/bin:$PATH
+
+export APERTURE_API_KEY="-"

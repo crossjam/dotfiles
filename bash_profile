@@ -76,3 +76,7 @@ export PATH="$PATH:/Users/crossjam/.lmstudio/bin"
 # End of LM Studio CLI section
 
 export PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/crossjam/.local/bin:$PATH"
