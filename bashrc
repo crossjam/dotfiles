@@ -179,13 +179,11 @@ if [[ "$INSIDE_EMACS" == *vterm* ]]; then
 fi
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/crossjam/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
-
 # Pi
-export PATH="/home/crossjam/.local/share/pi-node/node-v22.22.3-linux-x64/bin:$PATH"
-
+export PATH="/home/crossjam/.local/share/pi-node/current/bin:$PATH"
 
 # Added by Antigravity CLI installer
 export PATH="/home/crossjam/.local/bin:$PATH"
