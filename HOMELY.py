@@ -444,6 +444,14 @@ def fonts():
             installpkg("font-fira-sans")
             installpkg("font-fira-mono")
             installpkg("font-fira-mono-for-powerline")
+
+            installpkg("font-fira-code-nerd-font")
+            installpkg("font-fira-mono-nerd-font")
+            installpkg("font-inconsolata-nerd-font")
+            installpkg("font-ubuntu-nerd-font")
+            installpkg("font-mononoki-nerd-font")
+            installpkg("font-victor-mono-nerd-font")
+
         elif IS_LINUX:
             installpkg("fonts-powerline")
             installpkg("fonts-firacode")
